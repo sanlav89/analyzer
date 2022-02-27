@@ -14,12 +14,13 @@ set(
 )
 
 # HEADERS
-# set (
-    # HEADERS
-# )
+set (
+    HEADERS
+        idao.h
+        types.h
+)
 
-#add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # PROPERTIES
 set_target_properties (
