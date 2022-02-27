@@ -11,6 +11,7 @@ project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
 set(
     SOURCES
         analyzer.cpp
+        model.cpp
 )
 
 # HEADERS
@@ -19,7 +20,12 @@ set (
         types.h
         idao.h
         iview.h
-        iidentifier.h
+        identifymethod.h
+        mlidentifier.h
+        simplemethod.h
+        deconvmethod.h
+        model.h
+        nuclidelibrary.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

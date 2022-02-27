@@ -2,7 +2,7 @@
 
 #include "idao.h"
 #include "iview.h"
-#include "iidentifier.h"
+#include "model.h"
 
 int main()
 {
@@ -19,14 +19,8 @@ int main()
     view->updateActivities(0);
     view->updateState();
 
-    idf::IdentifierPtr idf{new idf::Identifier};
-    auto result = idf->identify(0);
-
-    std::cout << "Identify result: ";
-    for (auto &prob : result) {
-        std::cout << prob << " ";
-    }
-    std::cout << std::endl;
+    model::ModelPtr model{new model::Model};
+    model->accum(0);
 
     return 0;
 }
