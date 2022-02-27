@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "idao.h"
+#include "iview.h"
 
 int main()
 {
@@ -10,6 +11,12 @@ int main()
     dao->connect();
     dao->read();
     dao->disconnect();
+
+    view::ViewPtr view{new view::View};
+    view->updateSpectrum(0);
+    view->updateNuclides(0);
+    view->updateActivities(0);
+    view->updateState();
 
     return 0;
 }

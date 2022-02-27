@@ -29,6 +29,7 @@ public:
     virtual data_t read()
     {
         std::cout << "Read" << std::endl;
+        return 0;
     }
 
     virtual void disconnect()
