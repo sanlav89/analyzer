@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include <iostream>
-#include <memory>
 
 namespace view {
 

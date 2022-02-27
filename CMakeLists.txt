@@ -19,6 +19,7 @@ set (
         types.h
         idao.h
         iview.h
+        iidentifier.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
