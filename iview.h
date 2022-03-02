@@ -13,7 +13,7 @@ public:
     virtual void updateActivities(const activities_t &activities) = 0;
     virtual void updateState() = 0;
 };
-
+/*
 class View : public IView
 {
 public:
@@ -43,6 +43,6 @@ public:
 };
 
 using ViewPtr = std::unique_ptr<View>;
-
+*/
 }
 

@@ -6,6 +6,9 @@ set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 set(PROJECT_NAME "analyzer" CACHE STRING "Project name")
 project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
@@ -15,6 +18,7 @@ set(
     SOURCES
         analyzer.cpp
         model.cpp
+        view.cpp
 )
 
 # HEADERS
@@ -29,6 +33,7 @@ set (
         deconvmethod.h
         model.h
         nuclidelibrary.h
+        view.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

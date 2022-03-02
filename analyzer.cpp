@@ -5,7 +5,7 @@
 #include "model.h"
 
 #include <QApplication>
-#include <QWidget>
+#include "view.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,16 +18,17 @@ int main(int argc, char *argv[])
     dao->read();
     dao->disconnect();
 
-    view::ViewPtr view{new view::View};
-    view->updateSpectrum(0);
-    view->updateNuclides(0);
-    view->updateActivities(0);
-    view->updateState();
+//    view::ViewPtr view{new view::View};
+//    view->updateSpectrum(0);
+//    view->updateNuclides(0);
+//    view->updateActivities(0);
+//    view->updateState();
 
     model::ModelPtr model{new model::Model};
     model->accum(0);
 
-    QWidget w;
-    w.show();
+    view::View g;
+    g.show();
+
     return a.exec();
 }
