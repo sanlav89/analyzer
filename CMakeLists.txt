@@ -7,6 +7,9 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 set(PROJECT_NAME "analyzer" CACHE STRING "Project name")
 project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
 
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+
 # SOURCES
 set(
     SOURCES
@@ -39,6 +42,11 @@ set_target_properties (
 )
 
 # Linking
+target_link_libraries(
+    ${PROJECT_NAME}
+        PRIVATE
+            Qt${QT_VERSION_MAJOR}::Widgets
+)
 
 # Compiler options
 target_compile_options(

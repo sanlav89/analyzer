@@ -4,8 +4,13 @@
 #include "iview.h"
 #include "model.h"
 
-int main()
+#include <QApplication>
+#include <QWidget>
+
+int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     std::cout << "Hello form Analyzer" << std::endl;
 
     dao::DaoPtr dao{new dao::Dao};
@@ -22,5 +27,7 @@ int main()
     model::ModelPtr model{new model::Model};
     model->accum(0);
 
-    return 0;
+    QWidget w;
+    w.show();
+    return a.exec();
 }
