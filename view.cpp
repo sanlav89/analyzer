@@ -1,5 +1,6 @@
 #include "view.h"
 #include <QVBoxLayout>
+#include <qwt_plot.h>
 
 namespace view {
 
@@ -24,6 +25,7 @@ View::View(QWidget *parent)
     mainLayout->addWidget(m_activityLbl, 1);
     mainLayout->addWidget(m_spectrumLbl, 1);
     mainLayout->addWidget(m_nuclidesLbl, 1);
+    mainLayout->addWidget(new QwtPlot(this), 1);
     setLayout(mainLayout);
 
     connect(m_startBtn, &QPushButton::clicked, this, &View::onStartBtn);
