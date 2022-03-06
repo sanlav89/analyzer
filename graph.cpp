@@ -98,15 +98,23 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
 {
     assert(spectrum.size() == SpectrumSize);
     auto n = 0;
-    auto countsValue = [&n, spectrum] {
+    auto ymax = 0;
+    auto countsValue = [&n, &ymax, spectrum] {
         auto result = static_cast<double>(spectrum[n++]);
-        if (result < 1) {
-            result = 1;
+        if (result < LOG_MIN) {
+            result = LOG_MIN;
+        }
+        if (result > ymax) {
+            ymax = result;
         }
         return result;
     };
     std::generate(m_countsValues.begin(), m_countsValues.end(), countsValue);
     m_curve->setSamples(m_energyValues.data(), m_countsValues.data(), SpectrumSize);
+
+    setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
+    setAxisScale(QwtPlot::yLeft, 1, ymax * 5);
+
     replot();
 }
 
@@ -126,17 +134,23 @@ void Graph::updateActivities(const activities_t &activities)
 void Graph::updateNuclides(const nuclides_t &nuclides)
 {
     // All lines
-    std::vector<line_t> allLines;
+    struct lineinfo_t {
+        std::string name;
+        line_t line;
+    };
+    std::vector<lineinfo_t> allLines;
     allLines.reserve(50);
     for (const auto &nuclide : nuclides) {
-        allLines.insert(allLines.end(), nuclide.lines.begin(), nuclide.lines.end());
+        for (const auto &line : nuclide.lines) {
+            allLines.push_back({nuclide.name, line});
+        }
     }
 
     // Sort All Lines
     struct {
-        bool operator()(line_t l1, line_t l2) const
+        bool operator()(lineinfo_t l1, lineinfo_t l2) const
         {
-            return l1.intensity < l2.intensity;
+            return l1.line.intensity < l2.line.intensity;
         }
     } less;
     std::sort(allLines.begin(), allLines.end(), less);
@@ -151,8 +165,8 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
         if (i >= MaxMarkersCount) {
             break;
         }
-        m_markers[i]->setValue(allLines[i].energy, 1);
-        m_markers[i]->setLabel(QwtText("Eu-152"));
+        m_markers[i]->setValue(allLines[i].line.energy, 1);
+        m_markers[i]->setLabel(QwtText(allLines[i].name.c_str()));
         m_markers[i]->setVisible(true);
     }
 

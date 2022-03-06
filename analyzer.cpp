@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     g.show();
 
     model::Model model;
+    g.updateEnergyScale(model.enpoly());
     g.updateSpectrum(model.spectrum());
     g.updateNuclides(model.nuclides());
     g.updateActivities(model.activities());

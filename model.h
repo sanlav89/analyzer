@@ -19,6 +19,7 @@ public:
     spectrum_t spectrum() const;
     nuclides_t nuclides() const;
     activities_t activities() const;
+    enpoly_t enpoly() const;
 
 private:
 
@@ -26,6 +27,7 @@ private:
     IdentifyMethodPtr m_identifyMethod;
     DetectorPtr m_detector;
     NuclideLibraryPtr m_library;
+    enpoly_t m_enpoly;
 
 };
 

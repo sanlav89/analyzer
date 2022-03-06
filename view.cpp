@@ -6,7 +6,6 @@ namespace view {
 
 View::View(QWidget *parent)
     : QWidget(parent)
-    , m_state(Paused)
 {
     m_graph = new Graph({0, 1}, this);
 
@@ -29,6 +28,11 @@ View::View(QWidget *parent)
 
 }
 
+void View::updateEnergyScale(const enpoly_t &enpoly)
+{
+    m_graph->updateEnergyScale(enpoly);
+}
+
 void View::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
 {
     m_graph->updateSpectrum(spectrum);
@@ -44,28 +48,14 @@ void View::updateActivities([[maybe_unused]]const activities_t &activities)
     m_graph->updateActivities(activities);
 }
 
-void View::updateState()
-{
-    switch (m_state) {
-    case Paused:
-        m_statusLbl->setText("Paused >");
-        break;
-    case Started:
-        m_statusLbl->setText("Started ||");
-        break;
-    }
-}
-
 void View::onStartBtn()
 {
-    m_state = Started;
-    updateState();
+    m_statusLbl->setText("Started ||");
 }
 
 void View::onPauseBtn()
 {
-    m_state = Paused;
-    updateState();
+    m_statusLbl->setText("Paused >");
 }
 
 void View::onClearBtn()

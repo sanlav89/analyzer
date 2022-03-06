@@ -18,22 +18,15 @@ public:
     void updateSpectrum(const spectrum_t &spectrum) override;
     void updateNuclides(const nuclides_t &nuclides) override;
     void updateActivities(const activities_t &activities) override;
-    void updateState() override;
+    void updateEnergyScale(const enpoly_t &enpoly) override;
 
 private:
-
-    enum State {
-        Started,
-        Paused
-    };
 
     Graph *m_graph;
     QPushButton *m_startBtn;
     QPushButton *m_pauseBtn;
     QPushButton *m_clearBtn;
     QLabel *m_statusLbl;
-
-    int m_state;
 
 signals:
 
