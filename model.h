@@ -2,8 +2,10 @@
 
 #include "nuclidelibrary.h"
 #include "identifymethod.h"
+#include "detector.h"
 
 using namespace idf;
+using namespace dao;
 
 namespace model {
 
@@ -14,13 +16,15 @@ class Model
 public:
     Model();
 
-    void accum(const spectrum_t &spectrum);
-    void clear();
+    spectrum_t spectrum() const;
+    nuclides_t nuclides() const;
+    activities_t activities() const;
 
 private:
 
     spectrum_t m_spectrum;
     IdentifyMethodPtr m_identifyMethod;
+    DetectorPtr m_detector;
     NuclideLibraryPtr m_library;
 
 };

@@ -3,6 +3,7 @@
 #include <qwt_plot_grid.h>
 #include <qwt_symbol.h>
 #include <qwt_scale_engine.h>
+#include <algorithm>
 
 namespace view {
 
@@ -26,11 +27,15 @@ Graph::Graph(const enpoly_t &enpoly, QWidget *parent)
     setPalette(pal);
 
     // Grid
+    auto gridColor = QColor(200, 200, 200);
+    gridColor.setAlpha(50);
+    auto gridPen = QPen(gridColor, 0.5);
     auto grid = new QwtPlotGrid;
     grid->enableXMin(true);
     grid->enableYMin(true);
-    grid->enableX(false);
-    grid->enableY(false);
+    grid->enableX(true);
+    grid->enableY(true);
+    grid->setPen(gridPen);
     grid->attach(this);
 
     // Spectrum Curve
@@ -43,14 +48,14 @@ Graph::Graph(const enpoly_t &enpoly, QWidget *parent)
 
     // Markers
     auto markerPen = QPen(QColor(200, 150, 0), 0, Qt::SolidLine);
-    auto markerSymbolType = QwtSymbol::Diamond;
+    auto markerSymbolType = QwtSymbol::NoSymbol;
     auto markerSymbolColorBorder = QPen(Qt::yellow);
     auto markerSymbolColorFill = QBrush(Qt::cyan);
     auto markerSymbolSize = QSize(10, 10);
-    auto markerLineStyle = QwtPlotMarker::Cross;
+    auto markerLineStyle = QwtPlotMarker::VLine;
     auto markerAlignment = Qt::AlignLeft | Qt::AlignTop;
     m_markers.reserve(MaxMarkersCount);
-    for (auto i = 0; i < MaxMarkersCount; i++) {
+    for (auto i = 0u; i < MaxMarkersCount; i++) {
         auto marker = new QwtPlotMarker;
         marker->setLineStyle(markerLineStyle);
         marker->setLabelAlignment(markerAlignment);
@@ -63,7 +68,7 @@ Graph::Graph(const enpoly_t &enpoly, QWidget *parent)
 
     // Activity info
     auto activityInfoFont = QFont("Consolas", 9, QFont::Normal);
-    auto activityInfoRenderFlags = Qt::AlignLeft;
+    auto activityInfoRenderFlags = Qt::AlignRight | Qt::AlignTop;
     auto activityInfoTextColor = QColor(250, 200, 100);
     auto activityInfoBorderPen = QPen(QColor(250, 200, 100), 1);
     auto activityInfoBorderRadius = 3;
@@ -75,6 +80,9 @@ Graph::Graph(const enpoly_t &enpoly, QWidget *parent)
     m_activityInfo.setBorderPen(activityInfoBorderPen);
     m_activityInfo.setBorderRadius(activityInfoBorderRadius);
     m_activityInfo.setBackgroundBrush(QBrush(activityInfoBorderFill));
+    m_activityLabel = new QwtPlotTextLabel;
+    m_activityLabel->attach(this);
+    m_activityLabel->setText(m_activityInfo);
 
     // Log Scale engine
     setAxisScaleEngine(QwtPlot::yLeft, new QwtLogScaleEngine);
@@ -92,8 +100,8 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
     auto n = 0;
     auto countsValue = [&n, spectrum] {
         auto result = static_cast<double>(spectrum[n++]);
-        if (result < LOG_MIN) {
-            result = LOG_MIN;
+        if (result < 1) {
+            result = 1;
         }
         return result;
     };
@@ -102,13 +110,52 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
     replot();
 }
 
-void Graph::updateActivities([[maybe_unused]]const activities_t &activities)
+void Graph::updateActivities(const activities_t &activities)
 {
+    QString text = "Activities:";
+    for (const auto &activityInfo : activities) {
+        text.append("\r\n");
+        text.append(QString::asprintf("%s : %.3f", activityInfo.name.c_str(),
+                                  activityInfo.activity));
+    }
+    m_activityInfo.setText(text);
+    m_activityLabel->setText(m_activityInfo);
     replot();
 }
 
-void Graph::updateNuclides([[maybe_unused]]const nuclideid_t &nuclides)
+void Graph::updateNuclides(const nuclides_t &nuclides)
 {
+    // All lines
+    std::vector<line_t> allLines;
+    allLines.reserve(50);
+    for (const auto &nuclide : nuclides) {
+        allLines.insert(allLines.end(), nuclide.lines.begin(), nuclide.lines.end());
+    }
+
+    // Sort All Lines
+    struct {
+        bool operator()(line_t l1, line_t l2) const
+        {
+            return l1.intensity < l2.intensity;
+        }
+    } less;
+    std::sort(allLines.begin(), allLines.end(), less);
+
+    // Disable all markers
+    for (auto marker : m_markers) {
+        marker->setVisible(false);
+    }
+
+    // Enable first 10 markers
+    for (auto i = 0u; i < allLines.size(); i++) {
+        if (i >= MaxMarkersCount) {
+            break;
+        }
+        m_markers[i]->setValue(allLines[i].energy, 1);
+        m_markers[i]->setLabel(QwtText("Eu-152"));
+        m_markers[i]->setVisible(true);
+    }
+
     replot();
 }
 

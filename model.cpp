@@ -1,6 +1,7 @@
 #include "model.h"
 
 #include "simplemethod.h"
+#include "simulator.h"
 
 namespace model {
 
@@ -14,26 +15,25 @@ activities_t calcActivities(const spectrum_t &, const nuclides_t &)
 
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
+    , m_detector{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"})}
     , m_library{new NuclideLibrary}
 {
+    m_detector->connect();
 }
 
-void Model::accum(const spectrum_t &spectrum)
+spectrum_t Model::spectrum() const
 {
-    for (auto i = 0u; i < m_spectrum.size(); i++) {
-        m_spectrum[i] += spectrum[i];
-    }
-    // TODO: notify view
-    auto probas = m_identifyMethod->identify(m_spectrum);
-    auto nuclides = m_library->nuclides(probas);
-    // TODO: notify view
-    calcActivities(m_spectrum, nuclides);
-    // TODO: notify view
+    return m_detector->read().second;
 }
 
-void Model::clear()
+nuclides_t Model::nuclides() const
 {
-    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
+    return m_library->nuclides(m_identifyMethod->identify(m_spectrum));
+}
+
+activities_t Model::activities() const
+{
+    return calcActivities(m_spectrum, {});
 }
 
 }

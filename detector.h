@@ -14,7 +14,7 @@ public:
     virtual void disconnect() = 0;
 };
 
-using DaoPtr = std::unique_ptr<Detector>;
+using DetectorPtr = std::unique_ptr<Detector>;
 
 }
 

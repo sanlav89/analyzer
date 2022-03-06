@@ -33,7 +33,6 @@ private:
     QPushButton *m_clearBtn;
     QLabel *m_statusLbl;
 
-
     int m_state;
 
 signals:

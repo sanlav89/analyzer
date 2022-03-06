@@ -31,14 +31,17 @@ View::View(QWidget *parent)
 
 void View::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
 {
+    m_graph->updateSpectrum(spectrum);
 }
 
 void View::updateNuclides([[maybe_unused]]const nuclides_t &nuclides)
 {
+    m_graph->updateNuclides(nuclides);
 }
 
 void View::updateActivities([[maybe_unused]]const activities_t &activities)
 {
+    m_graph->updateActivities(activities);
 }
 
 void View::updateState()
