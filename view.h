@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include "iview.h"
+#include "graph.h"
 
 namespace view {
 
@@ -26,14 +27,12 @@ private:
         Paused
     };
 
+    Graph *m_graph;
     QPushButton *m_startBtn;
     QPushButton *m_pauseBtn;
     QPushButton *m_clearBtn;
-
     QLabel *m_statusLbl;
-    QLabel *m_activityLbl;
-    QLabel *m_spectrumLbl;
-    QLabel *m_nuclidesLbl;
+
 
     int m_state;
 

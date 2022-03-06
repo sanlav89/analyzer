@@ -1,5 +1,5 @@
 #include "view.h"
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <qwt_plot.h>
 
 namespace view {
@@ -8,24 +8,19 @@ View::View(QWidget *parent)
     : QWidget(parent)
     , m_state(Paused)
 {
+    m_graph = new Graph({0, 1}, this);
+
     m_startBtn = new QPushButton("Start", this);
     m_pauseBtn = new QPushButton("Pause", this);
     m_clearBtn = new QPushButton("Clear", this);
+    m_statusLbl = new QLabel(this);
 
-    m_statusLbl   = new QLabel("", this);
-    m_activityLbl = new QLabel("", this);
-    m_spectrumLbl = new QLabel("", this);
-    m_nuclidesLbl = new QLabel("", this);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(m_startBtn, 1);
-    mainLayout->addWidget(m_pauseBtn, 1);
-    mainLayout->addWidget(m_clearBtn, 1);
-    mainLayout->addWidget(m_statusLbl, 1);
-    mainLayout->addWidget(m_activityLbl, 1);
-    mainLayout->addWidget(m_spectrumLbl, 1);
-    mainLayout->addWidget(m_nuclidesLbl, 1);
-    mainLayout->addWidget(new QwtPlot(this), 1);
+    QGridLayout *mainLayout = new QGridLayout(this);
+    mainLayout->addWidget(m_graph, 0, 0, 19, 20);
+    mainLayout->addWidget(m_startBtn, 19, 0, 1, 1);
+    mainLayout->addWidget(m_pauseBtn, 19, 1, 1, 1);
+    mainLayout->addWidget(m_clearBtn, 19, 2, 1, 1);
+    mainLayout->addWidget(m_statusLbl, 19, 3, 1, 17);
     setLayout(mainLayout);
 
     connect(m_startBtn, &QPushButton::clicked, this, &View::onStartBtn);
@@ -36,17 +31,14 @@ View::View(QWidget *parent)
 
 void View::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
 {
-    m_spectrumLbl->setText(QString::asprintf("Spectrum: %d", 0));
 }
 
-void View::updateNuclides(const nuclides_t &nuclides)
+void View::updateNuclides([[maybe_unused]]const nuclides_t &nuclides)
 {
-    m_nuclidesLbl->setText(QString::asprintf("Nuclides: %d", nuclides));
 }
 
-void View::updateActivities(const activities_t &activities)
+void View::updateActivities([[maybe_unused]]const activities_t &activities)
 {
-    m_activityLbl->setText(QString::asprintf("Activities: %d", activities));
 }
 
 void View::updateState()

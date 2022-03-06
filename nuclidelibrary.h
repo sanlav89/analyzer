@@ -8,13 +8,8 @@ namespace model {
 class NuclideLibrary
 {
 public:
-    NuclideLibrary() = default;
-
-    nuclides_t nuclides([[maybe_unused]]const probas_t &probas)
-    {
-        std::cout << "Return nuclides from library" << std::endl;
-        return 0;
-    }
+    NuclideLibrary();
+    nuclides_t nuclides(const probas_t &probas);
 };
 
 using NuclideLibraryPtr = std::unique_ptr<NuclideLibrary>;

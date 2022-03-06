@@ -6,7 +6,10 @@ namespace model {
 
 activities_t calcActivities(const spectrum_t &, const nuclides_t &)
 {
-    return 10;
+    activities_t result{
+        {"Eu-152", 0.625}
+    };
+    return result;
 }
 
 Model::Model()

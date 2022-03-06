@@ -32,6 +32,8 @@ set(
         model.cpp
         view.cpp
         simulator.cpp
+        nuclidelibrary.cpp
+        graph.cpp
 )
 
 # HEADERS
@@ -48,6 +50,7 @@ set (
         nuclidelibrary.h
         view.h
         simulator.h
+        graph.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
