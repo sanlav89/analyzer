@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "idao.h"
+#include "simulator.h"
 #include "iview.h"
 #include "model.h"
 
@@ -13,19 +13,15 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello form Analyzer" << std::endl;
 
-    dao::DaoPtr dao{new dao::Dao};
-    dao->connect();
-    dao->read();
-    dao->disconnect();
+    dao::Simulator detector({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"});
 
-//    view::ViewPtr view{new view::View};
-//    view->updateSpectrum(0);
-//    view->updateNuclides(0);
-//    view->updateActivities(0);
-//    view->updateState();
+    detector.connect();
+    auto data = detector.read();
+    detector.disconnect();
 
-    model::ModelPtr model{new model::Model};
-    model->accum(0);
+    for (int i = 1000; i < 1024; i++) {
+        std::cout << data.second[i] << " " << data.second.data()[i] << std::endl;
+    }
 
     view::View g;
     g.show();

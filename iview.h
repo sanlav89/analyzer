@@ -8,7 +8,7 @@ namespace view {
 class IView
 {
 public:
-    virtual void updateSpectrum(const data_t &data) = 0;
+    virtual void updateSpectrum(const spectrum_t &spectrum) = 0;
     virtual void updateNuclides(const nuclides_t &nuclides) = 0;
     virtual void updateActivities(const activities_t &activities) = 0;
     virtual void updateState() = 0;

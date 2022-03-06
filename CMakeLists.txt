@@ -12,10 +12,18 @@ set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(Boost COMPONENTS filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 
 # Qwt
-set(QWT_INCLUDE_DIR "C:/qwt-6.1.5/src")
-set(QWT_LIBRARY "C:/qwt-6.1.5/lib/qwt.dll")
+if (WIN32)
+    set(QWT_INCLUDE_DIR "C:/qwt-6.1.5/src")
+    set(QWT_LIBRARY "C:/qwt-6.1.5/lib/qwt.dll")
+endif(WIN32)
+if (UNIX)
+    set(QWT_INCLUDE_DIR "/usr/local/qwt-6.1.5/include")
+    set(QWT_LIBRARY "/usr/local/qwt-6.1.5/lib/libqwt.so")
+endif(UNIX)
 
 # SOURCES
 set(
@@ -23,13 +31,14 @@ set(
         analyzer.cpp
         model.cpp
         view.cpp
+        simulator.cpp
 )
 
 # HEADERS
 set (
     HEADERS
         types.h
-        idao.h
+        detector.h
         iview.h
         identifymethod.h
         mlidentifier.h
@@ -38,6 +47,7 @@ set (
         model.h
         nuclidelibrary.h
         view.h
+        simulator.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
@@ -65,6 +75,17 @@ target_compile_options(
     ${PROJECT_NAME}
         PRIVATE
             -Wall -Wextra -pedantic -Werror
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Th228_15_OSGI.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/Th228_15_OSGI.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Cs137_15_OSGI.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/Cs137_15_OSGI.spe
+    COPYONLY
 )
 
 # Package

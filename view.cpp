@@ -34,9 +34,9 @@ View::View(QWidget *parent)
 
 }
 
-void View::updateSpectrum(const data_t &data)
+void View::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
 {
-    m_spectrumLbl->setText(QString::asprintf("Spectrum: %d", data));
+    m_spectrumLbl->setText(QString::asprintf("Spectrum: %d", 0));
 }
 
 void View::updateNuclides(const nuclides_t &nuclides)

@@ -17,7 +17,9 @@ Model::Model()
 
 void Model::accum(const spectrum_t &spectrum)
 {
-    m_spectrum += spectrum;
+    for (auto i = 0u; i < m_spectrum.size(); i++) {
+        m_spectrum[i] += spectrum[i];
+    }
     // TODO: notify view
     auto probas = m_identifyMethod->identify(m_spectrum);
     auto nuclides = m_library->nuclides(probas);
@@ -28,7 +30,7 @@ void Model::accum(const spectrum_t &spectrum)
 
 void Model::clear()
 {
-    m_spectrum = 0;
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
 }
 
 }

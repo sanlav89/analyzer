@@ -14,7 +14,7 @@ class View : public QWidget, public IView
 public:
     explicit View(QWidget *parent = nullptr);
 
-    void updateSpectrum(const data_t &data) override;
+    void updateSpectrum(const spectrum_t &spectrum) override;
     void updateNuclides(const nuclides_t &nuclides) override;
     void updateActivities(const activities_t &activities) override;
     void updateState() override;
