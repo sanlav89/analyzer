@@ -1,42 +1,18 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#pragma once
 
-#include <QWidget>
-#include <QPushButton>
-#include <QLabel>
-#include "iview.h"
-#include "graph.h"
+#include "types.h"
+#include <iostream>
 
 namespace view {
 
-class View : public QWidget, public IView
+class IView
 {
-    Q_OBJECT
 public:
-    explicit View(QWidget *parent = nullptr);
-
-    void updateSpectrum(const spectrum_t &spectrum) override;
-    void updateNuclides(const nuclides_t &nuclides) override;
-    void updateActivities(const activities_t &activities) override;
-    void updateEnergyScale(const enpoly_t &enpoly) override;
-
-private:
-
-    Graph *m_graph;
-    QPushButton *m_startBtn;
-    QPushButton *m_pauseBtn;
-    QPushButton *m_clearBtn;
-    QLabel *m_statusLbl;
-
-signals:
-
-private slots:
-    void onStartBtn();
-    void onPauseBtn();
-    void onClearBtn();
-
+    virtual void updateSpectrum(const spectrum_t &spectrum) = 0;
+    virtual void updateNuclides(const nuclides_t &nuclides) = 0;
+    virtual void updateActivities(const activities_t &activities) = 0;
+    virtual void updateEnergyScale(const enpoly_t &enpoly) = 0;
 };
 
 }
 
-#endif // GRAPH_H
