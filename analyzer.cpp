@@ -1,11 +1,12 @@
 #include <iostream>
 
 #include "simulator.h"
-#include "iview.h"
+#include "view.h"
 #include "model.h"
 
 #include <QApplication>
-#include "view.h"
+#include "mainwidget.h"
+#include "controller.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,14 +14,16 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello form Analyzer" << std::endl;
 
-    view::View g;
-    g.show();
+    view::MainWidget g;
+//    g.show();
 
-    model::Model model;
-    g.updateEnergyScale(model.enpoly());
-    g.updateSpectrum(model.spectrum());
-    g.updateNuclides(model.nuclides());
-    g.updateActivities(model.activities());
+    ctrl::Controller controller(&g);
+
+//    model::Model model;
+//    g.updateEnergyScale(model.enpoly());
+//    g.updateSpectrum(model.spectrum());
+//    g.updateNuclides(model.nuclides());
+//    g.updateActivities(model.activities());
 
     return a.exec();
 }

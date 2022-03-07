@@ -30,10 +30,11 @@ set(
     SOURCES
         analyzer.cpp
         model.cpp
-        view.cpp
+        mainwidget.cpp
         simulator.cpp
         nuclidelibrary.cpp
         graph.cpp
+        controller.cpp
 )
 
 # HEADERS
@@ -41,16 +42,17 @@ set (
     HEADERS
         types.h
         detector.h
-        iview.h
+        view.h
         identifymethod.h
         mlidentifier.h
         simplemethod.h
         deconvmethod.h
         model.h
         nuclidelibrary.h
-        view.h
+        mainwidget.h
         simulator.h
         graph.h
+        controller.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

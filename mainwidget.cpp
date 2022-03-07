@@ -1,13 +1,13 @@
-#include "view.h"
+#include "mainwidget.h"
 #include <QGridLayout>
 #include <qwt_plot.h>
 
 namespace view {
 
-View::View(QWidget *parent)
-    : QWidget(parent)
+MainWidget::MainWidget(View *parent)
+    : View(parent)
 {
-    m_graph = new Graph({0, 1}, this);
+    m_graph = new Graph(this);
 
     m_startBtn = new QPushButton("Start", this);
     m_pauseBtn = new QPushButton("Pause", this);
@@ -22,45 +22,47 @@ View::View(QWidget *parent)
     mainLayout->addWidget(m_statusLbl, 19, 3, 1, 17);
     setLayout(mainLayout);
 
-    connect(m_startBtn, &QPushButton::clicked, this, &View::onStartBtn);
-    connect(m_pauseBtn, &QPushButton::clicked, this, &View::onPauseBtn);
-    connect(m_clearBtn, &QPushButton::clicked, this, &View::onClearBtn);
+    connect(m_startBtn, &QPushButton::clicked, this, &MainWidget::startButtonClicked);
+    connect(m_pauseBtn, &QPushButton::clicked, this, &MainWidget::pauseButtonClicked);
+    connect(m_clearBtn, &QPushButton::clicked, this, &MainWidget::clearButtonClicked);
 
 }
 
-void View::updateEnergyScale(const enpoly_t &enpoly)
+void MainWidget::updateEnergyScale(const enpoly_t &enpoly)
 {
     m_graph->updateEnergyScale(enpoly);
 }
 
-void View::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
+void MainWidget::updateStatusMsg(const std::string &msg)
+{
+    m_statusLbl->setText(QString(msg.c_str()));
+}
+
+void MainWidget::setStartedButtonsState()
+{
+    m_startBtn->setEnabled(false);
+    m_pauseBtn->setEnabled(true);
+}
+
+void MainWidget::setPausedButtonsState()
+{
+    m_startBtn->setEnabled(true);
+    m_pauseBtn->setEnabled(false);
+}
+
+void MainWidget::updateSpectrum([[maybe_unused]]const spectrum_t &spectrum)
 {
     m_graph->updateSpectrum(spectrum);
 }
 
-void View::updateNuclides([[maybe_unused]]const nuclides_t &nuclides)
+void MainWidget::updateNuclides([[maybe_unused]]const nuclides_t &nuclides)
 {
     m_graph->updateNuclides(nuclides);
 }
 
-void View::updateActivities([[maybe_unused]]const activities_t &activities)
+void MainWidget::updateActivities([[maybe_unused]]const activities_t &activities)
 {
     m_graph->updateActivities(activities);
-}
-
-void View::onStartBtn()
-{
-    m_statusLbl->setText("Started ||");
-}
-
-void View::onPauseBtn()
-{
-    m_statusLbl->setText("Paused >");
-}
-
-void View::onClearBtn()
-{
-    m_statusLbl->setText("Cleared");
 }
 
 }

@@ -7,13 +7,15 @@
 
 namespace view {
 
-Graph::Graph(const enpoly_t &enpoly, QWidget *parent)
+Graph::Graph(QWidget *parent)
     : QwtPlot(parent)
 {
+    //  Widget settings
+    setMinimumSize(800, 480);
+
     // Init energy scale
     m_energyValues.resize(SpectrumSize);
     m_countsValues.resize(SpectrumSize);
-    updateEnergyScale(enpoly);
 
     // Axes font
     auto axisFont = QFont("Helvetica", 10);
