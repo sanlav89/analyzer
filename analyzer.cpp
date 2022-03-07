@@ -14,14 +14,13 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello form Analyzer" << std::endl;
 
-    DetectorPtr d{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"})};
     view::MainWidget g;
     model::ModelPtr m{new model::Model};
     m->addObserver(&g);
 
     ctrl::Controller controller(std::move(m), &g);
+    DetectorPtr d{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"}, 1000, &controller)};
     controller.setDetector(std::move(d));
-    controller.execute();
 
     return a.exec();
 }

@@ -16,6 +16,7 @@ using activityval_t = double;
 using intensity_t = double;
 using energy_t = double;
 using enpoly_t = std::vector<double>;
+using color_t = int;
 
 struct line_t {
     energy_t energy;
@@ -24,6 +25,7 @@ struct line_t {
 
 struct nuclide_t {
     std::string name;
+    color_t color;
     std::vector<line_t> lines;
 };
 

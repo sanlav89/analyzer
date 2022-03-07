@@ -93,6 +93,11 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Cs137_15_OSGI.spe
     COPYONLY
 )
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
+    ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json
+    COPYONLY
+)
 
 # Package
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

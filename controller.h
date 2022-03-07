@@ -19,7 +19,6 @@ class Controller : public QObject
 public:
     explicit Controller(ModelPtr model, ViewPtr view, QObject *parent = nullptr);
     void setDetector(DetectorPtr detector);
-    void execute();
 
 private:
     ModelPtr m_model;
@@ -32,6 +31,7 @@ private slots:
     void onStartBtn();
     void onPauseBtn();
     void onClearBtn();
+    void onDetectorReadyRead();
 
 };
 

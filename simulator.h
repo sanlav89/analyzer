@@ -1,6 +1,7 @@
 #pragma once
 
 #include "detector.h"
+#include <QTimer>
 
 namespace dao {
 
@@ -9,19 +10,22 @@ using filelist_t = std::vector<filename_t>;
 
 class Simulator : public Detector
 {
+    Q_OBJECT
 public:
-    Simulator(const filelist_t &filelist);
-
-    void connect() override;
+    explicit Simulator(const filelist_t &filelist, const double &countRate, QObject *parent = nullptr);
     data_t read() override;
-    void disconnect() override;
 
 private:
 
-    filelist_t m_filelist;
+    QTimer *m_timer;
+    double m_countRate;
     std::vector<spectrum_t> m_spectrums;
+    data_t m_dataToRead;
 
     spectrum_t readFromBinaryFile(const filename_t &filename);
+
+private slots:
+    void onTimeout();
 
 };
 

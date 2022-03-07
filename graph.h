@@ -24,7 +24,7 @@ public:
 
 private:
 
-    const size_t MaxMarkersCount = 10;
+    const size_t MaxMarkersCount = 20;
 
     QwtPlotCurve *m_curve;
     QwtText m_activityInfo;

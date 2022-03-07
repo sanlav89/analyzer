@@ -17,6 +17,7 @@ Model::Model()
     : m_identifyMethod{new SimpleMethod}
     , m_library{new NuclideLibrary}
 {
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
 }
 
 void Model::addObserver(ObserverPtr observer)
@@ -38,7 +39,14 @@ void Model::setEnPoly(const enpoly_t &enpoly)
 void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
 {
     // Accumullate spectrum
-    m_spectrum = spectrum;
+    auto n = 0;
+    auto genSample = [&n, spectrum, this] {
+        sample_t result = 0;
+        result = spectrum[n] + m_spectrum[n];
+        n++;
+        return result;
+    };
+    std::generate(m_spectrum.begin(), m_spectrum.end(), genSample);
     notifySpectrumChanged();
 
     // Identify nuclides
