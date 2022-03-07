@@ -2,19 +2,29 @@
 
 #include <QObject>
 #include "view.h"
+#include "detector.h"
+#include "model.h"
 
 using namespace view;
+using namespace dao;
+using namespace model;
 
 namespace ctrl {
+
+using ViewPtr = View*;
 
 class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(View *view, QObject *parent = nullptr);
+    explicit Controller(ModelPtr model, ViewPtr view, QObject *parent = nullptr);
+    void setDetector(DetectorPtr detector);
+    void execute();
 
 private:
-    View *m_view;
+    ModelPtr m_model;
+    ViewPtr m_view;
+    DetectorPtr m_detector;
 
 signals:
 

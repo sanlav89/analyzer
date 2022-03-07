@@ -6,10 +6,11 @@
 #include <QLabel>
 #include "view.h"
 #include "graph.h"
+#include "observer.h"
 
 namespace view {
 
-class MainWidget : public View
+class MainWidget : public View, public Observer
 {
     Q_OBJECT
 public:

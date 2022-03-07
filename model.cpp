@@ -15,32 +15,91 @@ activities_t calcActivities(const spectrum_t &, const nuclides_t &)
 
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
-    , m_detector{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"})}
     , m_library{new NuclideLibrary}
-    , m_enpoly{-30.76253,2.686544,0.0007731202,-1.12527E-06,5.746466E-10}
 {
-    m_detector->connect();
 }
 
-spectrum_t Model::spectrum() const
+void Model::addObserver(ObserverPtr observer)
 {
-    return m_detector->read().second;
+    m_observers.push_back(observer);
 }
 
-nuclides_t Model::nuclides() const
+void Model::removeObserver(ObserverPtr observer)
 {
-    return m_library->nuclides(m_identifyMethod->identify(m_spectrum));
+    m_observers.remove(observer);
 }
 
-activities_t Model::activities() const
+void Model::setEnPoly(const enpoly_t &enpoly)
 {
-    return calcActivities(m_spectrum, {});
+    m_enpoly = enpoly;
+    notifyUpdateEnergyScale();
 }
 
-enpoly_t Model::enpoly() const
+void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
 {
-    return m_enpoly;
+    // Accumullate spectrum
+    m_spectrum = spectrum;
+    notifySpectrumChanged();
+
+    // Identify nuclides
+    m_nuclides = m_library->nuclides({});
+    notifyNuclidesChanged();
+
+    // Calculate Activities
+    m_activities = calcActivities(m_spectrum, m_nuclides);
+    notifyActivitiesChanged();
 }
+
+void Model::clearSpectrum()
+{
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
+    m_nuclides.clear();
+    m_activities.clear();
+    notifySpectrumChanged();
+    notifyNuclidesChanged();
+    notifyActivitiesChanged();
+}
+
+void Model::notifySpectrumChanged()
+{
+    if (m_observers.empty()) {
+        return;
+    }
+    for (auto observer : m_observers) {
+        observer->updateSpectrum(m_spectrum);
+    }
+}
+
+void Model::notifyNuclidesChanged()
+{
+    if (m_observers.empty()) {
+        return;
+    }
+    for (auto observer : m_observers) {
+        observer->updateNuclides(m_nuclides);
+    }
+}
+
+void Model::notifyActivitiesChanged()
+{
+    if (m_observers.empty()) {
+        return;
+    }
+    for (auto observer : m_observers) {
+        observer->updateActivities(m_activities);
+    }
+}
+
+void Model::notifyUpdateEnergyScale()
+{
+    if (m_observers.empty()) {
+        return;
+    }
+    for (auto observer : m_observers) {
+        observer->updateEnergyScale(m_enpoly);
+    }
+}
+
 
 }
 

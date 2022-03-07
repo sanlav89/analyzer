@@ -14,16 +14,14 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello form Analyzer" << std::endl;
 
+    DetectorPtr d{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"})};
     view::MainWidget g;
-//    g.show();
+    model::ModelPtr m{new model::Model};
+    m->addObserver(&g);
 
-    ctrl::Controller controller(&g);
-
-//    model::Model model;
-//    g.updateEnergyScale(model.enpoly());
-//    g.updateSpectrum(model.spectrum());
-//    g.updateNuclides(model.nuclides());
-//    g.updateActivities(model.activities());
+    ctrl::Controller controller(std::move(m), &g);
+    controller.setDetector(std::move(d));
+    controller.execute();
 
     return a.exec();
 }

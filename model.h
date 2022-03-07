@@ -1,33 +1,49 @@
 #pragma once
 
+#include <list>
 #include "nuclidelibrary.h"
 #include "identifymethod.h"
-#include "detector.h"
+#include "observer.h"
 
 using namespace idf;
-using namespace dao;
+using namespace view;
 
 namespace model {
 
 activities_t calcActivities(const spectrum_t &spectrum, const nuclides_t &nuclides);
 
+using ObserverPtr = Observer*;
+
 class Model
 {
 public:
     Model();
+    ~Model() = default;
 
-    spectrum_t spectrum() const;
-    nuclides_t nuclides() const;
-    activities_t activities() const;
-    enpoly_t enpoly() const;
+    void addObserver(ObserverPtr observer);
+    void removeObserver(ObserverPtr observer);
+
+    void setEnPoly(const enpoly_t &enpoly);
+    void receiveNewSpectrumData(const spectrum_t &spectrum);
+    void clearSpectrum();
 
 private:
 
+    void notifySpectrumChanged();
+    void notifyNuclidesChanged();
+    void notifyActivitiesChanged();
+    void notifyUpdateEnergyScale();
+
+    std::list<ObserverPtr> m_observers;
+
     spectrum_t m_spectrum;
-    IdentifyMethodPtr m_identifyMethod;
-    DetectorPtr m_detector;
-    NuclideLibraryPtr m_library;
+    nuclides_t m_nuclides;
+    activities_t m_activities;
     enpoly_t m_enpoly;
+
+    IdentifyMethodPtr m_identifyMethod;
+    NuclideLibraryPtr m_library;
+
 
 };
 

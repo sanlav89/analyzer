@@ -53,6 +53,7 @@ set (
         simulator.h
         graph.h
         controller.h
+        observer.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
