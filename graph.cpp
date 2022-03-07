@@ -23,7 +23,7 @@ Graph::Graph(QWidget *parent)
     setAxisFont(QwtPlot::yLeft, axisFont);
 
     // Background
-    auto bg = QBrush(QColor(50, 50, 100));
+    auto bg = QBrush(QColor(25, 25, 25));
     QPalette pal;
     pal.setBrush(QPalette::Window, bg);
     setPalette(pal);
@@ -69,7 +69,7 @@ Graph::Graph(QWidget *parent)
     }
 
     // Activity info
-    auto activityInfoFont = QFont("Consolas", 9, QFont::Normal);
+    auto activityInfoFont = QFont("Consolas", 12, QFont::Normal);
     auto activityInfoRenderFlags = Qt::AlignRight | Qt::AlignTop;
     auto activityInfoTextColor = QColor(250, 200, 100);
     auto activityInfoBorderPen = QPen(QColor(250, 200, 100), 1);
@@ -138,13 +138,14 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
     // All lines
     struct lineinfo_t {
         std::string name;
+        color_t color;
         line_t line;
     };
     std::vector<lineinfo_t> allLines;
     allLines.reserve(50);
     for (const auto &nuclide : nuclides) {
         for (const auto &line : nuclide.lines) {
-            allLines.push_back({nuclide.name, line});
+            allLines.push_back({nuclide.name, nuclide.color, line});
         }
     }
 
@@ -152,10 +153,10 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
     struct {
         bool operator()(lineinfo_t l1, lineinfo_t l2) const
         {
-            return l1.line.intensity < l2.line.intensity;
+            return l1.line.intensity > l2.line.intensity;
         }
-    } less;
-    std::sort(allLines.begin(), allLines.end(), less);
+    } greater;
+    std::sort(allLines.begin(), allLines.end(), greater);
 
     // Disable all markers
     for (auto marker : m_markers) {
@@ -164,11 +165,11 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
 
     // Enable first 10 markers
     for (auto i = 0u; i < allLines.size(); i++) {
-        if (i >= MaxMarkersCount) {
+        if (i >= MaxMarkersCount || allLines[i].line.intensity < 1) {
             break;
         }
         m_markers[i]->setValue(allLines[i].line.energy, 1);
-        m_markers[i]->setLabel(QwtText(allLines[i].name.c_str()));
+        m_markers[i]->setLinePen(Qt::GlobalColor(allLines[i].color), 0, Qt::SolidLine);
         m_markers[i]->setVisible(true);
     }
 

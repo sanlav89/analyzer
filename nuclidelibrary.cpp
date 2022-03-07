@@ -34,7 +34,6 @@ NuclideLibrary::NuclideLibrary()
                         }
                         );
         }
-
         m_library[id++] = nuclide;
     }
 }
