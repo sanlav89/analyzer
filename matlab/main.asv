@@ -1,0 +1,33 @@
+clc;
+clear;
+
+close all;
+
+[sp, ENERGY, FWHM, PEAKSHAPE, EFFICIENCY, lib_energies, ... 
+          Activity, start_channel, smooth_span, stop_condition, delim_counts, ...
+          factor, preSpSmoothWin, thres, minValuesUnderThres, ... 
+          centOfMassWindowLen, minNetCountsForMaxDetect, ... 
+          nIters, boost, nBoostIters, title_msg, minFilterOrder, maxFilterOrder, ...
+          filename] = ... 
+          LOAD_data_NaI(1);
+
+% Предварительны расчет некоторых параметров
+N = length(sp);
+[en, fwx, fwe] = f_calcEnergyFwhm(1:1:N, ENERGY, FWHM);
+roi = ones(1, N); % Области интереса SASNIP
+
+% Вычисление теоретических площадей пиков
+eff = f_calcEfficiency(lib_energies(:,1)', EFFICIENCY);
+tlive = 3600;
+areas = eff .* lib_energies(:, 2)' * Activity * tlive;
+
+figure;
+% subplot(211);
+semilogy(en, sp, 'Linewidth', 1); grid on; hold on;
+sz = size(lib_energies);
+for i = 1:1:sz(1)
+    semilogy([],[])
+end
+xlim([en(1) en(end)]);
+ylim([1 1e5]);
+xlabel('Energy [keV]');

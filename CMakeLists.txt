@@ -12,8 +12,8 @@ set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(Boost COMPONENTS filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
+#find_package(Boost COMPONENTS filesystem REQUIRED)
+#include_directories(${Boost_INCLUDE_DIR})
 
 # Qwt
 if (WIN32)
