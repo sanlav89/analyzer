@@ -32,9 +32,6 @@ private:
     QwtText m_activityInfo;
     QwtPlotTextLabel *m_activityLabel;
     std::vector<QwtPlotMarker *> m_markers;
-
-//    std::vector<QwtPlotTextLabel *>
-
     std::vector<qreal> m_energyValues;
     std::vector<qreal> m_countsValues;
 

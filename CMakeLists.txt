@@ -35,6 +35,7 @@ set(
         nuclidelibrary.cpp
         graph.cpp
         controller.cpp
+        graphcanvas.cpp
 )
 
 # HEADERS
@@ -54,6 +55,7 @@ set (
         graph.h
         controller.h
         observer.h
+        graphcanvas.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

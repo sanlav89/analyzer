@@ -4,6 +4,7 @@
 #include <qwt_symbol.h>
 #include <qwt_scale_engine.h>
 #include <algorithm>
+#include "graphcanvas.h"
 
 namespace view {
 
@@ -22,11 +23,8 @@ Graph::Graph(QWidget *parent)
     setAxisFont(QwtPlot::xBottom,  axisFont);
     setAxisFont(QwtPlot::yLeft, axisFont);
 
-    // Background
-    auto bg = QBrush(QColor(25, 25, 25));
-    QPalette pal;
-    pal.setBrush(QPalette::Window, bg);
-    setPalette(pal);
+    // Canvas
+    setCanvas(new GraphCanvas(QColor(25, 25, 25), QColor(75, 75, 75), this));
 
     // Grid
     auto gridColor = QColor(200, 200, 200);
@@ -115,6 +113,9 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
     std::generate(m_countsValues.begin(), m_countsValues.end(), countsValue);
     m_curve->setSamples(m_energyValues.data(), m_countsValues.data(), SpectrumSize);
 
+    if (ymax < 2) {
+        ymax = 2;
+    }
     setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
     setAxisScale(QwtPlot::yLeft, 1, ymax * 5);
     replot();
