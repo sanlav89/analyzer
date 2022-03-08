@@ -5,6 +5,8 @@
 #include <qwt_plot_marker.h>
 #include <qwt_plot_textlabel.h>
 #include <qwt_text.h>
+#include <qwt_plot_intervalcurve.h>
+#include <qwt_interval_symbol.h>
 #include <vector>
 #include "view.h"
 
@@ -26,14 +28,16 @@ private:
     QString taggedNuclideString(const nuclide_t &nuclide);
     QString taggedString(const QString &info, const QColor &color);
 
-    const size_t MaxMarkersCount = 20;
+    const size_t MaxNuclidesCount = 10;
 
     QwtPlotCurve *m_curve;
     QwtText m_activityInfo;
     QwtPlotTextLabel *m_activityLabel;
-    std::vector<QwtPlotMarker *> m_markers;
     std::vector<qreal> m_energyValues;
     std::vector<qreal> m_countsValues;
+
+    std::vector<QwtPlotIntervalCurve *> m_nuclideBars;
+    std::vector<QwtIntervalSymbol *> m_nuclideBarsSymbols;
 
 };
 
