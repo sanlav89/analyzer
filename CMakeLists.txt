@@ -35,6 +35,7 @@ set(
         nuclidelibrary.cpp
         graph.cpp
         controller.cpp
+        graphcanvas.cpp
 )
 
 # HEADERS
@@ -54,6 +55,7 @@ set (
         graph.h
         controller.h
         observer.h
+        graphcanvas.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
@@ -91,6 +93,11 @@ configure_file(
 configure_file(
     ${CMAKE_SOURCE_DIR}/data/Cs137_15_OSGI.spe
     ${CMAKE_CURRENT_BINARY_DIR}/Cs137_15_OSGI.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
+    ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json
     COPYONLY
 )
 

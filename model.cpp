@@ -5,18 +5,12 @@
 
 namespace model {
 
-activities_t calcActivities(const spectrum_t &, const nuclides_t &)
-{
-    activities_t result{
-        {"Eu-152", 0.625}
-    };
-    return result;
-}
-
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
     , m_library{new NuclideLibrary}
+    , m_isStarted{false}
 {
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
 }
 
 void Model::addObserver(ObserverPtr observer)
@@ -37,27 +31,32 @@ void Model::setEnPoly(const enpoly_t &enpoly)
 
 void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
 {
+    if (!m_isStarted) {
+        return;
+    }
+
     // Accumullate spectrum
-    m_spectrum = spectrum;
+    auto n = 0;
+    auto genSample = [&n, spectrum, this] {
+        sample_t result = 0;
+        result = spectrum[n] + m_spectrum[n];
+        n++;
+        return result;
+    };
+    std::generate(m_spectrum.begin(), m_spectrum.end(), genSample);
     notifySpectrumChanged();
 
     // Identify nuclides
     m_nuclides = m_library->nuclides({});
     notifyNuclidesChanged();
-
-    // Calculate Activities
-    m_activities = calcActivities(m_spectrum, m_nuclides);
-    notifyActivitiesChanged();
 }
 
 void Model::clearSpectrum()
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
     m_nuclides.clear();
-    m_activities.clear();
     notifySpectrumChanged();
     notifyNuclidesChanged();
-    notifyActivitiesChanged();
 }
 
 void Model::notifySpectrumChanged()
@@ -80,16 +79,6 @@ void Model::notifyNuclidesChanged()
     }
 }
 
-void Model::notifyActivitiesChanged()
-{
-    if (m_observers.empty()) {
-        return;
-    }
-    for (auto observer : m_observers) {
-        observer->updateActivities(m_activities);
-    }
-}
-
 void Model::notifyUpdateEnergyScale()
 {
     if (m_observers.empty()) {
@@ -98,6 +87,11 @@ void Model::notifyUpdateEnergyScale()
     for (auto observer : m_observers) {
         observer->updateEnergyScale(m_enpoly);
     }
+}
+
+void Model::setIsStarted(bool isStarted)
+{
+    m_isStarted = isStarted;
 }
 
 

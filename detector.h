@@ -1,20 +1,24 @@
 #pragma once
 
+#include <QObject>
 #include "types.h"
 #include <iostream>
 
 namespace dao {
 
-class Detector
+class Detector : public QObject
 {
+    Q_OBJECT
 public:
-    virtual ~Detector() = default;
-    virtual void connect() = 0;
+    explicit Detector(QObject *parent = nullptr) : QObject(parent) {}
     virtual data_t read() = 0;
-    virtual void disconnect() = 0;
+
+signals:
+    void readyRead();
 };
 
-using DetectorPtr = std::unique_ptr<Detector>;
+//using DetectorPtr = std::unique_ptr<Detector>;
+using DetectorPtr = Detector*;
 
 }
 

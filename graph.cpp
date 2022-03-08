@@ -4,6 +4,7 @@
 #include <qwt_symbol.h>
 #include <qwt_scale_engine.h>
 #include <algorithm>
+#include "graphcanvas.h"
 
 namespace view {
 
@@ -22,11 +23,8 @@ Graph::Graph(QWidget *parent)
     setAxisFont(QwtPlot::xBottom,  axisFont);
     setAxisFont(QwtPlot::yLeft, axisFont);
 
-    // Background
-    auto bg = QBrush(QColor(50, 50, 100));
-    QPalette pal;
-    pal.setBrush(QPalette::Window, bg);
-    setPalette(pal);
+    // Canvas
+    setCanvas(new GraphCanvas(QColor(75, 75, 75), QColor(125, 125, 125), this));
 
     // Grid
     auto gridColor = QColor(200, 200, 200);
@@ -42,40 +40,21 @@ Graph::Graph(QWidget *parent)
 
     // Spectrum Curve
     auto curveStyle = QwtPlotCurve::Lines;
-    auto curvePen = QPen(Qt::cyan, 1);
+    auto curvePen = QPen(QColor(100, 255, 150), 1.5);
     m_curve = new QwtPlotCurve;
     m_curve->setStyle(curveStyle);
     m_curve->setPen(curvePen);
     m_curve->attach(this);
 
-    // Markers
-    auto markerPen = QPen(QColor(200, 150, 0), 0, Qt::SolidLine);
-    auto markerSymbolType = QwtSymbol::NoSymbol;
-    auto markerSymbolColorBorder = QPen(Qt::yellow);
-    auto markerSymbolColorFill = QBrush(Qt::cyan);
-    auto markerSymbolSize = QSize(10, 10);
-    auto markerLineStyle = QwtPlotMarker::VLine;
-    auto markerAlignment = Qt::AlignLeft | Qt::AlignTop;
-    m_markers.reserve(MaxMarkersCount);
-    for (auto i = 0u; i < MaxMarkersCount; i++) {
-        auto marker = new QwtPlotMarker;
-        marker->setLineStyle(markerLineStyle);
-        marker->setLabelAlignment(markerAlignment);
-        marker->setLinePen(markerPen);
-        marker->setSymbol(new QwtSymbol(markerSymbolType, markerSymbolColorFill,
-                                        markerSymbolColorBorder, markerSymbolSize));
-        marker->attach(this);
-        m_markers.push_back(marker);
-    }
-
     // Activity info
-    auto activityInfoFont = QFont("Consolas", 9, QFont::Normal);
+    auto activityInfoFont = QFont("Consolas", 12, QFont::Normal);
+    activityInfoFont.setBold(true);
     auto activityInfoRenderFlags = Qt::AlignRight | Qt::AlignTop;
-    auto activityInfoTextColor = QColor(250, 200, 100);
-    auto activityInfoBorderPen = QPen(QColor(250, 200, 100), 1);
+    auto activityInfoTextColor = gridColor;
+    auto activityInfoBorderPen = QPen(activityInfoTextColor, 1);
     auto activityInfoBorderRadius = 3;
-    auto activityInfoBorderFill = QColor(60, 60, 100);
-    activityInfoBorderFill.setAlpha(50);
+    auto activityInfoBorderFill = activityInfoTextColor;
+    activityInfoBorderFill.setAlpha(75);
     m_activityInfo.setFont(activityInfoFont);
     m_activityInfo.setRenderFlags(activityInfoRenderFlags);
     m_activityInfo.setColor(activityInfoTextColor);
@@ -85,10 +64,27 @@ Graph::Graph(QWidget *parent)
     m_activityLabel = new QwtPlotTextLabel;
     m_activityLabel->attach(this);
     m_activityLabel->setText(m_activityInfo);
+    m_activityLabel->setVisible(false);
 
     // Log Scale engine
     setAxisScaleEngine(QwtPlot::yLeft, new QwtLogScaleEngine);
 
+    // Nuclidee lines bars
+    for (auto i = 0u; i < MaxNuclidesCount; i++) {
+        auto intervalSymbol = new QwtIntervalSymbol( QwtIntervalSymbol::Bar );
+        intervalSymbol->setWidth(8); // should be something even
+        m_nuclideBarsSymbols.push_back(intervalSymbol);
+        auto intervalCurve = new QwtPlotIntervalCurve;
+        intervalCurve->setSymbol(intervalSymbol);
+        QColor c = Qt::white;
+        c.setAlpha(0);
+        intervalCurve->setPen(c, 0.0, Qt::NoPen);
+        intervalCurve->setBrush(c);
+        intervalCurve->attach(this);
+        m_nuclideBars.push_back(intervalCurve);
+    }
+
+    setAxisScale(QwtPlot::yLeft, 1, 10);
     replot();
 }
 
@@ -114,62 +110,67 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
     std::generate(m_countsValues.begin(), m_countsValues.end(), countsValue);
     m_curve->setSamples(m_energyValues.data(), m_countsValues.data(), SpectrumSize);
 
+    if (ymax < 2) {
+        ymax = 2;
+    }
     setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
     setAxisScale(QwtPlot::yLeft, 1, ymax * 5);
-
-    replot();
-}
-
-void Graph::updateActivities(const activities_t &activities)
-{
-    QString text = "Activities:";
-    for (const auto &activityInfo : activities) {
-        text.append("\r\n");
-        text.append(QString::asprintf("%s : %.3f", activityInfo.name.c_str(),
-                                  activityInfo.activity));
-    }
-    m_activityInfo.setText(text);
-    m_activityLabel->setText(m_activityInfo);
     replot();
 }
 
 void Graph::updateNuclides(const nuclides_t &nuclides)
 {
-    // All lines
-    struct lineinfo_t {
-        std::string name;
-        line_t line;
-    };
-    std::vector<lineinfo_t> allLines;
-    allLines.reserve(50);
-    for (const auto &nuclide : nuclides) {
-        for (const auto &line : nuclide.lines) {
-            allLines.push_back({nuclide.name, line});
-        }
-    }
-
     // Sort All Lines
     struct {
-        bool operator()(lineinfo_t l1, lineinfo_t l2) const
+        bool operator()(line_t l1, line_t l2) const
         {
-            return l1.line.intensity < l2.line.intensity;
+            return l1.intensity < l2.intensity;
         }
     } less;
-    std::sort(allLines.begin(), allLines.end(), less);
 
     // Disable all markers
-    for (auto marker : m_markers) {
-        marker->setVisible(false);
+    for (auto intervalCurve : m_nuclideBars) {
+        intervalCurve->setVisible(false);
     }
 
     // Enable first 10 markers
-    for (auto i = 0u; i < allLines.size(); i++) {
-        if (i >= MaxMarkersCount) {
-            break;
+    QVector<QwtIntervalSample> rangeData;
+    rangeData.reserve(10);
+
+    double ymax = axisScaleDiv(QwtPlot::yLeft).upperBound();
+
+    int ind = 0;
+    for (const auto &nuclide : nuclides) {
+        auto it = std::max_element(nuclide.lines.begin(), nuclide.lines.end(), less);
+        double intencityMax = it->intensity;
+        rangeData.clear();
+        for (const auto &line : nuclide.lines) {
+            auto x = line.energy;
+            auto y = line.intensity / intencityMax * ymax;
+            rangeData.push_back(QwtIntervalSample(x, 0.5, y));
         }
-        m_markers[i]->setValue(allLines[i].line.energy, 1);
-        m_markers[i]->setLabel(QwtText(allLines[i].name.c_str()));
-        m_markers[i]->setVisible(true);
+        m_nuclideBars[ind]->setSamples(rangeData);
+        QColor c = Qt::GlobalColor(nuclide.color);
+        m_nuclideBarsSymbols[ind]->setPen(c, 1.5);
+        c.setAlpha(0);
+        m_nuclideBars[ind]->setPen(c, 0.0, Qt::NoPen);
+        m_nuclideBars[ind]->setBrush(c);
+        m_nuclideBars[ind]->setSymbol(m_nuclideBarsSymbols[ind]);
+        m_nuclideBars[ind]->setVisible(true);
+        ind++;
+    }
+
+    // Update Activities
+    if (nuclides.empty()) {
+        m_activityLabel->setVisible(false);
+    } else {
+        auto activityStr = taggedString("Activities : ", m_activityInfo.color());
+        for (const auto &nuclide : nuclides) {
+            activityStr.append(taggedNuclideString(nuclide));
+        }
+        m_activityInfo.setText(activityStr);
+        m_activityLabel->setText(m_activityInfo);
+        m_activityLabel->setVisible(true);
     }
 
     replot();
@@ -187,6 +188,25 @@ void Graph::updateEnergyScale(const enpoly_t &enpoly)
         return result;
     };
     std::generate(m_energyValues.begin(), m_energyValues.end(), energyValue);
+    setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
+    replot();
+}
+
+QString Graph::taggedNuclideString(const nuclide_t &nuclide)
+{
+    return taggedString(
+                QString::asprintf(
+                    "<br>%7s : %.3f", nuclide.name.c_str(), nuclide.activity
+                    ),
+                QColor(Qt::GlobalColor(nuclide.color))
+                );
+}
+
+QString Graph::taggedString(const QString &info, const QColor &color)
+{
+    auto result = QString("<font color=\"%1\">%2</font>")
+            .arg(color.name(), info);
+    return result;
 }
 
 }

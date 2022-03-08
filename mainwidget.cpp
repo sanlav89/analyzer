@@ -60,9 +60,4 @@ void MainWidget::updateNuclides([[maybe_unused]]const nuclides_t &nuclides)
     m_graph->updateNuclides(nuclides);
 }
 
-void MainWidget::updateActivities([[maybe_unused]]const activities_t &activities)
-{
-    m_graph->updateActivities(activities);
-}
-
 }
