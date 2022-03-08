@@ -10,8 +10,6 @@ using namespace view;
 
 namespace model {
 
-activities_t calcActivities(const spectrum_t &spectrum, const nuclides_t &nuclides);
-
 using ObserverPtr = Observer*;
 
 class Model
@@ -31,14 +29,12 @@ private:
 
     void notifySpectrumChanged();
     void notifyNuclidesChanged();
-    void notifyActivitiesChanged();
     void notifyUpdateEnergyScale();
 
     std::list<ObserverPtr> m_observers;
 
     spectrum_t m_spectrum;
     nuclides_t m_nuclides;
-    activities_t m_activities;
     enpoly_t m_enpoly;
 
     IdentifyMethodPtr m_identifyMethod;

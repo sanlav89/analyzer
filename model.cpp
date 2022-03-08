@@ -5,14 +5,6 @@
 
 namespace model {
 
-activities_t calcActivities(const spectrum_t &, const nuclides_t &)
-{
-    activities_t result{
-        {"Eu-152", 0.625}
-    };
-    return result;
-}
-
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
     , m_library{new NuclideLibrary}
@@ -52,20 +44,14 @@ void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
     // Identify nuclides
     m_nuclides = m_library->nuclides({});
     notifyNuclidesChanged();
-
-    // Calculate Activities
-    m_activities = calcActivities(m_spectrum, m_nuclides);
-    notifyActivitiesChanged();
 }
 
 void Model::clearSpectrum()
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
     m_nuclides.clear();
-    m_activities.clear();
     notifySpectrumChanged();
     notifyNuclidesChanged();
-    notifyActivitiesChanged();
 }
 
 void Model::notifySpectrumChanged()
@@ -85,16 +71,6 @@ void Model::notifyNuclidesChanged()
     }
     for (auto observer : m_observers) {
         observer->updateNuclides(m_nuclides);
-    }
-}
-
-void Model::notifyActivitiesChanged()
-{
-    if (m_observers.empty()) {
-        return;
-    }
-    for (auto observer : m_observers) {
-        observer->updateActivities(m_activities);
     }
 }
 

@@ -70,12 +70,13 @@ Graph::Graph(QWidget *parent)
 
     // Activity info
     auto activityInfoFont = QFont("Consolas", 12, QFont::Normal);
+    activityInfoFont.setBold(true);
     auto activityInfoRenderFlags = Qt::AlignRight | Qt::AlignTop;
-    auto activityInfoTextColor = QColor(250, 200, 100);
-    auto activityInfoBorderPen = QPen(QColor(250, 200, 100), 1);
+    auto activityInfoTextColor = QColor(200, 200, 200);
+    auto activityInfoBorderPen = QPen(QColor(200, 200, 200), 1);
     auto activityInfoBorderRadius = 3;
-    auto activityInfoBorderFill = QColor(60, 60, 100);
-    activityInfoBorderFill.setAlpha(50);
+    auto activityInfoBorderFill = QColor(200, 200, 200);
+    activityInfoBorderFill.setAlpha(75);
     m_activityInfo.setFont(activityInfoFont);
     m_activityInfo.setRenderFlags(activityInfoRenderFlags);
     m_activityInfo.setColor(activityInfoTextColor);
@@ -116,20 +117,6 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
 
     setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
     setAxisScale(QwtPlot::yLeft, 1, ymax * 5);
-
-    replot();
-}
-
-void Graph::updateActivities(const activities_t &activities)
-{
-    QString text = "Activities:";
-    for (const auto &activityInfo : activities) {
-        text.append("\r\n");
-        text.append(QString::asprintf("%s : %.3f", activityInfo.name.c_str(),
-                                  activityInfo.activity));
-    }
-    m_activityInfo.setText(text);
-    m_activityLabel->setText(m_activityInfo);
     replot();
 }
 
@@ -173,6 +160,14 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
         m_markers[i]->setVisible(true);
     }
 
+    // Update Activities
+    auto activityStr = taggedString("Activities : ", m_activityInfo.color());
+    for (const auto &nuclide : nuclides) {
+        activityStr.append(taggedNuclideString(nuclide));
+    }
+    m_activityInfo.setText(activityStr);
+    m_activityLabel->setText(m_activityInfo);
+
     replot();
 }
 
@@ -188,6 +183,23 @@ void Graph::updateEnergyScale(const enpoly_t &enpoly)
         return result;
     };
     std::generate(m_energyValues.begin(), m_energyValues.end(), energyValue);
+}
+
+QString Graph::taggedNuclideString(const nuclide_t &nuclide)
+{
+    return taggedString(
+                QString::asprintf(
+                    "<br>%7s : %.3f", nuclide.name.c_str(), nuclide.activity
+                    ),
+                QColor(Qt::GlobalColor(nuclide.color))
+                );
+}
+
+QString Graph::taggedString(const QString &info, const QColor &color)
+{
+    auto result = QString("<font color=\"%1\">%2</font>")
+            .arg(color.name(), info);
+    return result;
 }
 
 }

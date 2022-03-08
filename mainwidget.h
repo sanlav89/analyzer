@@ -18,7 +18,6 @@ public:
 
     void updateSpectrum(const spectrum_t &spectrum) override;
     void updateNuclides(const nuclides_t &nuclides) override;
-    void updateActivities(const activities_t &activities) override;
     void updateEnergyScale(const enpoly_t &enpoly) override;
     void updateStatusMsg(const std::string &msg) override;
     void setStartedButtonsState() override;

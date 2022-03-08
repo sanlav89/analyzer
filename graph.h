@@ -18,11 +18,13 @@ public:
     ~Graph();
 
     void updateSpectrum(const spectrum_t &spectrum);
-    void updateActivities(const activities_t &activities);
     void updateNuclides(const nuclides_t &nuclides);
     void updateEnergyScale(const enpoly_t &enpoly);
 
 private:
+
+    QString taggedNuclideString(const nuclide_t &nuclide);
+    QString taggedString(const QString &info, const QColor &color);
 
     const size_t MaxMarkersCount = 20;
 
@@ -30,6 +32,8 @@ private:
     QwtText m_activityInfo;
     QwtPlotTextLabel *m_activityLabel;
     std::vector<QwtPlotMarker *> m_markers;
+
+//    std::vector<QwtPlotTextLabel *>
 
     std::vector<qreal> m_energyValues;
     std::vector<qreal> m_countsValues;
