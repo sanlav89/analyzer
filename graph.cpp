@@ -64,6 +64,7 @@ Graph::Graph(QWidget *parent)
     m_activityLabel = new QwtPlotTextLabel;
     m_activityLabel->attach(this);
     m_activityLabel->setText(m_activityInfo);
+    m_activityLabel->setVisible(false);
 
     // Log Scale engine
     setAxisScaleEngine(QwtPlot::yLeft, new QwtLogScaleEngine);
@@ -83,6 +84,7 @@ Graph::Graph(QWidget *parent)
         m_nuclideBars.push_back(intervalCurve);
     }
 
+    setAxisScale(QwtPlot::yLeft, 1, 10);
     replot();
 }
 
@@ -159,12 +161,17 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
     }
 
     // Update Activities
-    auto activityStr = taggedString("Activities : ", m_activityInfo.color());
-    for (const auto &nuclide : nuclides) {
-        activityStr.append(taggedNuclideString(nuclide));
+    if (nuclides.empty()) {
+        m_activityLabel->setVisible(false);
+    } else {
+        auto activityStr = taggedString("Activities : ", m_activityInfo.color());
+        for (const auto &nuclide : nuclides) {
+            activityStr.append(taggedNuclideString(nuclide));
+        }
+        m_activityInfo.setText(activityStr);
+        m_activityLabel->setText(m_activityInfo);
+        m_activityLabel->setVisible(true);
     }
-    m_activityInfo.setText(activityStr);
-    m_activityLabel->setText(m_activityInfo);
 
     replot();
 }
@@ -181,6 +188,8 @@ void Graph::updateEnergyScale(const enpoly_t &enpoly)
         return result;
     };
     std::generate(m_energyValues.begin(), m_energyValues.end(), energyValue);
+    setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
+    replot();
 }
 
 QString Graph::taggedNuclideString(const nuclide_t &nuclide)

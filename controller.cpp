@@ -12,7 +12,13 @@ Controller::Controller(ModelPtr model, ViewPtr view, QObject *parent)
     connect(m_view, &View::startButtonClicked, this, &Controller::onStartBtn);
     connect(m_view, &View::pauseButtonClicked, this, &Controller::onPauseBtn);
     connect(m_view, &View::clearButtonClicked, this, &Controller::onClearBtn);
+
+    // Init view state
+    m_view->setPausedButtonsState();
     m_view->show();
+
+    // Init model state
+    m_model->setIsStarted(false);
 }
 
 void Controller::setDetector(DetectorPtr detector)
@@ -24,11 +30,13 @@ void Controller::setDetector(DetectorPtr detector)
 void Controller::onStartBtn()
 {
     m_view->setStartedButtonsState();
+    m_model->setIsStarted(true);
 }
 
 void Controller::onPauseBtn()
 {
     m_view->setPausedButtonsState();
+    m_model->setIsStarted(false);
 }
 
 void Controller::onClearBtn()

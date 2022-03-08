@@ -25,6 +25,8 @@ public:
     void receiveNewSpectrumData(const spectrum_t &spectrum);
     void clearSpectrum();
 
+    void setIsStarted(bool isStarted);
+
 private:
 
     void notifySpectrumChanged();
@@ -39,7 +41,7 @@ private:
 
     IdentifyMethodPtr m_identifyMethod;
     NuclideLibraryPtr m_library;
-
+    bool m_isStarted;
 
 };
 

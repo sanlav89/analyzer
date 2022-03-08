@@ -8,6 +8,7 @@ namespace model {
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
     , m_library{new NuclideLibrary}
+    , m_isStarted{false}
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
 }
@@ -30,6 +31,10 @@ void Model::setEnPoly(const enpoly_t &enpoly)
 
 void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
 {
+    if (!m_isStarted) {
+        return;
+    }
+
     // Accumullate spectrum
     auto n = 0;
     auto genSample = [&n, spectrum, this] {
@@ -82,6 +87,11 @@ void Model::notifyUpdateEnergyScale()
     for (auto observer : m_observers) {
         observer->updateEnergyScale(m_enpoly);
     }
+}
+
+void Model::setIsStarted(bool isStarted)
+{
+    m_isStarted = isStarted;
 }
 
 
