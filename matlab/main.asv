@@ -9,7 +9,7 @@ close all;
           centOfMassWindowLen, minNetCountsForMaxDetect, ... 
           nIters, boost, nBoostIters, title_msg, minFilterOrder, maxFilterOrder, ...
           filename] = ... 
-          LOAD_data_LaBr3(9);
+          LOAD_data_OSGI(2);
 
 % Предварительны расчет некоторых параметров
 N = length(sp);
@@ -18,14 +18,15 @@ roi = ones(1, N); % Области интереса SASNIP
 
 % Вычисление теоретических площадей пиков
 eff = f_calcEfficiency(lib_energies(:,1)', EFFICIENCY);
-figure;
-effi = f_calcEfficiency(en, EFFICIENCY);
-semilogy(en, effi); grid on; hold on;
-xlim([en(1) en(end)]);
-ylim([1 1e5]);
-%%
+% figure;
+% effi = f_calcEfficiency(en, EFFICIENCY);
+% semilogy(en, effi); grid on; hold on;
+% xlim([en(1) en(end)]);
+% ylim([7e-5 1e-2]);
+% %%
 tlive = 3600;
 areas = eff .* lib_energies(:, 2)' * Activity * tlive;
+% areas = 1e-3 * lib_energies(:, 2)' * Activity * tlive;
 
 a = 3000;
 b = -0.003;
@@ -42,7 +43,7 @@ for i = 1:1:length(areas)
     y = y + g;
 end
 noise = randn(1, N);
-noise = 5 * (noise - mean(noise));
+noise = 0 * (noise - mean(noise));
 m = m + y + noise;
 
 % figure;
@@ -54,11 +55,11 @@ semilogy(en, sp, 'Linewidth', 1); grid on; hold on;
 semilogy(en, m);
 sz = size(lib_energies);
 for i = 1:1:sz(1)
-    semilogy([lib_energies(i,1) lib_energies(i,1)],[1 1e5], 'k');
+    semilogy([lib_energies(i,1) lib_energies(i,1)],[1 1e6], 'k');
 end
 
 xlim([en(1) en(end)]);
-ylim([1 1e5]);
+ylim([1 1e6]);
 xlabel('Energy [keV]');
 % subplot(212);
 % semilogy(sp, 'Linewidth', 1); grid on; hold on;
