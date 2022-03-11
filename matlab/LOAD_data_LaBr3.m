@@ -6,16 +6,17 @@ function [sp, ENERGY, FWHM, PEAKSHAPE, EFFICIENCY, lib_energies, ...
           filename] = ... 
           LOAD_data_LaBr3(numberOfSpectrum)
 
+%       d:\WORK\_Gammatech\database\
 filenames = [
-"d:/Workspace/Gammatech/database/Ti44_#250_24sm.dat" 
-"d:/Workspace/Gammatech/database/Th228_#3514_24sm.dat" 
-"d:/Workspace/Gammatech/database/Eu152_#936_24sm.dat" 
-"d:/Workspace/Gammatech/database/Cs137_#936_24sm.dat" 
-"d:/Workspace/Gammatech/database/Co60_#936_24sm.dat" 
-"d:/Workspace/Gammatech/database/Co57_#478_24sm.dat" 
-"d:/Workspace/Gammatech/database/Bckg_10.dat" 
-"d:/Workspace/Gammatech/database/Ba133_#936_24sm.dat" 
-"d:/Workspace/Gammatech/database/Am241_#14-05_24sm.dat" 
+"d:/WORK/_Gammatech/database/Ti44_#250_24sm.dat" 
+"d:/WORK/_Gammatech/database/Th228_#3514_24sm.dat" 
+"d:/WORK/_Gammatech/database/Eu152_#936_24sm.dat" 
+"d:/WORK/_Gammatech/database/Cs137_#936_24sm.dat" 
+"d:/WORK/_Gammatech/database/Co60_#936_24sm.dat" 
+"d:/WORK/_Gammatech/database/Co57_#478_24sm.dat" 
+"d:/WORK/_Gammatech/database/Bckg_10.dat" 
+"d:/WORK/_Gammatech/database/Ba133_#936_24sm.dat" 
+"d:/WORK/_Gammatech/database/Am241_#14-05_24sm.dat" 
 ];
 sizeofFile = 4096;
 
@@ -41,7 +42,12 @@ PEAKSHAPE = [
 964.37, 0.423854, 1.000000, 0.929992, 1.056103, 342.394571, 3.413988, 7354.874783
 ];
 
-EFFICIENCY = [-42.085421 77.053259 -60.786200 24.167924 -4.841784 0.387048 ];
+EFFICIENCY = [-42.085421 77.053259 -60.786200 24.167924 -4.841784 0.387048];
+% EFFICIENCY = [-86.999064 131.322308 -75.421375 19.019057 -1.789179 ];
+% EFFICIENCY = [-21.412318 23.485857 -9.350442 1.143476 ];
+% EFFICIENCY = [-9.873462 8.017599 -2.745777 0.258087 ];
+% EFFICIENCY = [-19.424696 20.563331 -7.695772 0.906304 ];
+% EFFICIENCY = [-7.268519 4.109910 -0.924845 -0.011715 ];
 
 lib_Am_241 = [
 26.345 2.270000
@@ -139,16 +145,16 @@ lib_Ti_44 = [
 % Библиотека
 lib_energies = zeros(1, 2);
 % TODO ... 
-% "c:/Workspace/_Gammatech/database/Ti44_#250_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Th228_#3514_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Eu152_#936_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Cs137_#936_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Co60_#936_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Co57_#478_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Bckg_10.dat" 
-% "c:/Workspace/_Gammatech/database/Ba133_#936_24sm.dat" 
-% "c:/Workspace/_Gammatech/database/Am241_#14-05_24sm.dat" 
-if (numberOfSpectrum == 1) lib_energies = lib_Ti_44; title_msg = 'LaBr3-Ti44-#250-24sm';
+% "c:/WORK/__Gammatech/database/Ti44_#250_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Th228_#3514_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Eu152_#936_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Cs137_#936_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Co60_#936_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Co57_#478_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Bckg_10.dat" 
+% "c:/WORK/__Gammatech/database/Ba133_#936_24sm.dat" 
+% "c:/WORK/__Gammatech/database/Am241_#14-05_24sm.dat" 
+if (numberOfSpectrum == 1) lib_energies = [lib_Ti_44; lib_K_40]; title_msg = 'LaBr3-Ti44-#250-24sm';
 elseif (numberOfSpectrum == 2) lib_energies = lib_Th_228; title_msg = 'LaBr3-Th228-#3514-24sm';
 elseif (numberOfSpectrum == 3) lib_energies = lib_Eu_152; title_msg = 'LaBr3-Eu152-#936-24sm';
 elseif (numberOfSpectrum == 4) lib_energies = lib_Cs_137; title_msg = 'LaBr3-Cs137-#936-24sm';

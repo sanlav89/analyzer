@@ -1,7 +1,7 @@
 clc;
 clear;
 
-% close all;
+close all;
 
 [sp, ENERGY, FWHM, PEAKSHAPE, EFFICIENCY, lib_energies, ... 
           Activity, start_channel, smooth_span, stop_condition, delim_counts, ...
@@ -9,7 +9,7 @@ clear;
           centOfMassWindowLen, minNetCountsForMaxDetect, ... 
           nIters, boost, nBoostIters, title_msg, minFilterOrder, maxFilterOrder, ...
           filename] = ... 
-          LOAD_data_LaBr3(4);
+          LOAD_data_LaBr3(2);
 
 % Предварительны расчет некоторых параметров
 N = length(sp);
@@ -18,16 +18,46 @@ roi = ones(1, N); % Области интереса SASNIP
 
 % Вычисление теоретических площадей пиков
 eff = f_calcEfficiency(lib_energies(:,1)', EFFICIENCY);
+% figure;
+% effi = f_calcEfficiency(en, EFFICIENCY);
+% semilogy(en, effi); grid on; hold on;
+% xlim([en(1) en(end)]);
+% ylim([7e-5 1e-2]);
+% %%
 tlive = 3600;
-areas = eff .* lib_energies(:, 2)' * Activity * tlive;
+% areas = eff .* lib_energies(:, 2)' * Activity * tlive;
+areas = 1e-3 * lib_energies(:, 2)' * Activity * tlive;
+
+a = 3000;
+b = -0.003;
+c = 150;
+d = -0.0018;
+m = f_substrateModel(en, a, b, c, d);
+
+y = zeros(1, N);
+for i = 1:1:length(areas)
+    en0 = lib_energies(i,1);
+    [~, ~, fwhm] = f_calcEnergyFwhm(en0, ENERGY, FWHM);
+    sigma = fwhm / (2*sqrt(2*log(2)));
+    g = f_gaussian(en, en0, sigma, areas(i));
+    y = y + g;
+end
+noise = randn(1, N);
+noise = 0 * (noise - mean(noise));
+m = m + y + noise;
+
+% figure;
+% hist(noise);
 
 figure;
 % subplot(211);
 semilogy(en, sp, 'Linewidth', 1); grid on; hold on;
+semilogy(en, m);
 sz = size(lib_energies);
 for i = 1:1:sz(1)
     semilogy([lib_energies(i,1) lib_energies(i,1)],[1 1e5], 'k');
 end
+
 xlim([en(1) en(end)]);
 ylim([1 1e5]);
 xlabel('Energy [keV]');
