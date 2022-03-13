@@ -38,6 +38,7 @@ set(
         graph.cpp
         controller.cpp
         graphcanvas.cpp
+        tfidentifier.cpp
 )
 
 # HEADERS
@@ -58,10 +59,11 @@ set (
         controller.h
         observer.h
         graphcanvas.h
+        tfidentifier.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_executable(test_tfidentifier test_tfidentifier.cpp)
+add_executable(test_tfidentifier test_tfidentifier.cpp tfidentifier.cpp)
 
 # PROPERTIES
 set_target_properties (
