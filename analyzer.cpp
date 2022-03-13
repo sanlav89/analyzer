@@ -8,11 +8,13 @@
 #include "mainwidget.h"
 #include "controller.h"
 
+#include <tensorflow/c/c_api.h>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    std::cout << "Hello form Analyzer" << std::endl;
+    std::cout << "Hello form Analyzer" << TF_Version() << std::endl;
 
     view::MainWidget g;
     model::ModelPtr m{new model::Model};
