@@ -51,16 +51,16 @@ for ipa = 1:1:length(possible_a)
 
 for id1 = 1:1:num_classes
     
-for id2 = 1:1:num_classes
+% for id2 = 1:1:num_classes
 
     w = zeros(1, num_classes);
     a = zeros(1, num_classes);
 
     w(id1) = possible_w(ipw);
-    a(id2) = possible_a(ipa);
+    a(id1) = possible_a(ipa);
     
-    w(id1) = possible_w(ipw);
-    a(id2) = possible_a(ipa);
+%     w(id2) = possible_w(ipw);
+%     a(id2) = possible_a(ipa);
    
     Anoise = possible_n(ipn);
     y_train = zeros(1, N);
@@ -84,7 +84,7 @@ for id2 = 1:1:num_classes
     fprintf(fileID,'\n');
     
     cnt = cnt + 1;
-end
+% end
 
 end
 

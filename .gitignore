@@ -53,6 +53,8 @@ compile_commands.json
 
 # Matlab
 *.asv
-*.csv
+# *.csv
 
 
+*.data-00000-of-00001
+*.index
