@@ -1,21 +1,18 @@
-function simSp = f_simulateSpectrum(tlive, Anoise, Activity, eff, energies, intensities, en, ENERGY, FWHM)
+function simSp = f_simulateSpectrum(tlive, Anoise, Activity, eff, lib_energies, en, ENERGY, FWHM)
 
-areas = eff .* intensities * Activity * tlive;
-% areas = 1e-3 * lib_energies(:, 2)' * Activity * tlive;
+areas = eff .* lib_energies(:,2)' * Activity * tlive;
 
 a = 5 * tlive;
 b = -0.003;
 c = 0.5 * tlive;
-d = -0.0025;
-% a = 0;
-% b = 0;
-% c = 5 * tlive;
-% d = -0.0035;
-substrate = f_substrateModel(en, a, b, c, d);
+d = -0.002;
+
 N = length(en);
+substrate = f_substrateModel(en, a, b, c, d);
+% substrate = zeros(1, N);
 y = zeros(1, N);
 for i = 1:1:length(areas)
-    en0 = energies(i);
+    en0 = lib_energies(i, 1);
     x0 = f_channelByEnergy(en, en0);
     [~, ~, fwhm] = f_calcEnergyFwhm(x0, ENERGY, FWHM);
     sigma = fwhm / (2*sqrt(2*log(2)));
