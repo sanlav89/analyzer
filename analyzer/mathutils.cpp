@@ -1,6 +1,7 @@
 #include "mathutils.h"
 #include <cmath>
 #include <algorithm>
+#include <numeric>
 
 namespace mathutils {
 
@@ -56,6 +57,28 @@ vector_t substrateModel(const vector_t &energies, const double &a, const double 
     vector_t result(energies.size());
     for (auto idx = 0u; idx < energies.size(); idx++) {
         result[idx] = a * std::pow(std::exp(b * energies[idx]), 2) + c * std::exp(d * energies[idx]);
+    }
+    return result;
+}
+
+spectrum_t generatePortion(const spectrum_t &spectrum, const double &countRate)
+{
+    spectrum_t result;
+    std::fill(result.begin(), result.end(), 0);
+
+    int countRateRnd = static_cast<double>(std::rand()) / RAND_MAX * countRate + countRate / 2;
+    auto score = std::accumulate(spectrum.begin(), spectrum.end(), 0);
+    for (auto i = 0; i < countRateRnd; i++) {
+        int point = static_cast<double>(std::rand()) / RAND_MAX * score;
+        int left = 0;
+        for (auto j = 0u; j < spectrum.size(); j++) {
+            if (point >= left && point < left + spectrum[j]) {
+                result[j] += 1;
+                break;
+            } else {
+                left += spectrum[j];
+            }
+        }
     }
     return result;
 }

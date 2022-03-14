@@ -90,7 +90,16 @@ void DetectorWidget::onActivityChanged(int id, qreal value)
 
 void DetectorWidget::onTimeout()
 {
-/*    try {
+    using namespace std::chrono;
+    data_t dataToSend;
+    dataToSend.first = duration_cast<timestamp_t>(
+                system_clock::now().time_since_epoch()
+                );
+    dataToSend.second = mathutils::generatePortion(m_spectrum, m_countRate);
+
+    qDebug() << sizeof(data_t);
+
+    try {
         ba::io_context io_context;
 
         ba::ip::tcp::endpoint ep(
@@ -103,19 +112,17 @@ void DetectorWidget::onTimeout()
 
         sock.connect(ep);
 
-        ba::write(sock, ba::buffer("ping", 4));
+        ba::write(sock, ba::buffer(reinterpret_cast<char *>(&dataToSend), sizeof(data_t)));
 
         char data[4];
         size_t len = sock.read_some(
             ba::buffer(data)
         );
         std::cout << "receive " << len << "=" << std::string{data, len} << std::endl;
-    }
-    catch(const boost::system::system_error& ex) {
+    } catch (const boost::system::system_error& ex) {
         std::cout << "boost exception! " << ex.what() << std::endl;
-    }
-    catch(const std::exception& ex) {
+    } catch (const std::exception& ex) {
         std::cout << "std::exception! " << ex.what() << std::endl;
-    }*/
+    }
 }
 

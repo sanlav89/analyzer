@@ -2,15 +2,17 @@
 
 #include "simplemethod.h"
 #include "simulator.h"
+#include "tfidentifier.h"
 
 namespace model {
 
 Model::Model()
-    : m_identifyMethod{new SimpleMethod}
+//    : m_identifyMethod{new SimpleMethod}
+    : m_identifyMethod{new TfIdentifier{"d:/Workspace/OTUS/analyzer/ml/saved_model", SpectrumSize}}
     , m_library{new NuclideLibrary{"nuclidelibrary.json"}}
     , m_isStarted{false}
 {
-    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 1);
 }
 
 void Model::addObserver(ObserverPtr observer)
@@ -47,13 +49,14 @@ void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
     notifySpectrumChanged();
 
     // Identify nuclides
-    m_nuclides = m_library->nuclides({});
+    auto probas = m_identifyMethod->identify(m_spectrum);
+    m_nuclides = m_library->nuclides(probas);
     notifyNuclidesChanged();
 }
 
 void Model::clearSpectrum()
 {
-    std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
+    std::fill(m_spectrum.begin(), m_spectrum.end(), 1);
     m_nuclides.clear();
     notifySpectrumChanged();
     notifyNuclidesChanged();

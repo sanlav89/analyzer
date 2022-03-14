@@ -39,6 +39,7 @@ set(
         controller.cpp
         graphcanvas.cpp
         tfidentifier.cpp
+        mathutils.cpp
 )
 
 # HEADERS
@@ -60,6 +61,7 @@ set (
         observer.h
         graphcanvas.h
         tfidentifier.h
+        mathutils.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

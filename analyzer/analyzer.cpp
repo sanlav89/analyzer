@@ -19,7 +19,14 @@ int main(int argc, char *argv[])
     m->addObserver(&g);
 
     ctrl::Controller controller(std::move(m), &g);
-    DetectorAccessPtr d{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"}, 1000, &controller)};
+    auto countRate = 100;
+//    DetectorAccessPtr d{new Simulator({"Th228_15_OSGI.spe"}, countRate, &controller)};
+//    DetectorAccessPtr d{new Simulator({"Eu152_15_OSGI.spe"}, countRate, &controller)};
+//    DetectorAccessPtr d{new Simulator({"Am241_15_OSGI.spe"}, countRate, &controller)};
+//    DetectorAccessPtr d{new Simulator({"Co60_15_OSGI.spe"}, countRate, &controller)};
+//    DetectorAccessPtr d{new Simulator({"Ba133_15_OSGI.spe"}, countRate, &controller)};
+    DetectorAccessPtr d{new Simulator({"Cs137_15_OSGI.spe"}, countRate, &controller)};
+//    DetectorAccessPtr d{new Simulator({"Cs137_15_OSGI.spe", "Th228_15_OSGI.spe"}, 1000, &controller)};
     controller.setDetector(std::move(d));
 
     return a.exec();

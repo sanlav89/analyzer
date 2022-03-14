@@ -8,12 +8,12 @@
 #include "sliderwithlabel.h"
 
 #include <QTimer>
-//#include <boost/asio.hpp>
+#include <boost/asio.hpp>
 
 using namespace model;
 using namespace view;
 
-//namespace ba = boost::asio;
+namespace ba = boost::asio;
 
 class DetectorWidget : public QWidget
 {
@@ -44,6 +44,7 @@ private:
     const qreal m_b = -0.003;
     const qreal m_c = 0.5;
     const qreal m_d = -0.002;
+    const qreal m_countRate = 100;
     void recalcSpectrum();
 
 private slots:

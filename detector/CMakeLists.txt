@@ -11,11 +11,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(ANALYZER_DIR ${CMAKE_SOURCE_DIR}/analyzer)
 
+#set(Boost_DEBUG ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-#find_package(Boost COMPONENTS filesystem REQUIRED)
-#include_directories(${Boost_INCLUDE_DIR})
-
+find_package(Boost COMPONENTS system REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/analyzer)
 
 # Qwt
@@ -35,7 +35,7 @@ set(
         detectorwidget.cpp
         detectorgraph.cpp
         sliderwithlabel.cpp
-        mathutils.cpp
+        ${ANALYZER_DIR}/mathutils.cpp
         ${ANALYZER_DIR}/nuclidelibrary.cpp
         ${ANALYZER_DIR}/graph.cpp
         ${ANALYZER_DIR}/graphcanvas.cpp
@@ -47,7 +47,7 @@ set (
         detectorwidget.h
         detectorgraph.h
         sliderwithlabel.h
-        mathutils.h
+        ${ANALYZER_DIR}/mathutils.h
         ${ANALYZER_DIR}/view.h
         ${ANALYZER_DIR}/types.h
         ${ANALYZER_DIR}/nuclidelibrary.h
@@ -70,6 +70,7 @@ target_include_directories(
     detector
         PRIVATE
             ${QWT_INCLUDE_DIR}
+            ${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(
@@ -77,6 +78,9 @@ target_link_libraries(
         PRIVATE
             Qt${QT_VERSION_MAJOR}::Widgets
             ${QWT_LIBRARY}
+            ${Boost_LIBRARIES}
+            wsock32
+            ws2_32
 )
 
 # Compiler options
