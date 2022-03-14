@@ -6,11 +6,11 @@
 
 namespace dao {
 
-class Detector : public QObject
+class DetectorAccess : public QObject
 {
     Q_OBJECT
 public:
-    explicit Detector(QObject *parent = nullptr) : QObject(parent) {}
+    explicit DetectorAccess(QObject *parent = nullptr) : QObject(parent) {}
     virtual data_t read() = 0;
 
 signals:
@@ -18,7 +18,7 @@ signals:
 };
 
 //using DetectorPtr = std::unique_ptr<Detector>;
-using DetectorPtr = Detector*;
+using DetectorAccessPtr = DetectorAccess*;
 
 }
 

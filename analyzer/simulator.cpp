@@ -8,7 +8,7 @@
 namespace dao {
 
 Simulator::Simulator(const filelist_t &filelist, const double &countRate, QObject *parent)
-    : Detector(parent)
+    : DetectorAccess(parent)
     , m_timer(new QTimer(this))
     , m_countRate(countRate)
 {

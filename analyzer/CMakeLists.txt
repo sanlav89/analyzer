@@ -45,7 +45,7 @@ set(
 set (
     HEADERS
         types.h
-        detector.h
+        detectoraccess.h
         view.h
         identifymethod.h
         mlidentifier.h
