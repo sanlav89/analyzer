@@ -17,7 +17,6 @@ signals:
     void readyRead();
 };
 
-//using DetectorPtr = std::unique_ptr<Detector>;
 using DetectorAccessPtr = DetectorAccess*;
 
 }

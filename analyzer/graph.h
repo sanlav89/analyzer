@@ -23,6 +23,9 @@ public:
     void updateNuclides(const nuclides_t &nuclides);
     void updateEnergyScale(const enpoly_t &enpoly);
 
+protected:
+    QwtPlotCurve *m_curve;
+
 private:
 
     QString taggedNuclideString(const nuclide_t &nuclide);
@@ -30,7 +33,6 @@ private:
 
     const size_t MaxNuclidesCount = 10;
 
-    QwtPlotCurve *m_curve;
     QwtText m_activityInfo;
     QwtPlotTextLabel *m_activityLabel;
     std::vector<qreal> m_energyValues;

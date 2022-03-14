@@ -8,3 +8,4 @@ project(${PROJECT_NAME})
 # SUBDIRECTORIES
 add_subdirectory(${PROJECT_NAME})
 add_subdirectory(tests)
+add_subdirectory(detector)
