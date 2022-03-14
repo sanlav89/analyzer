@@ -1,11 +1,11 @@
-#include <iostream>
+#include "detectorwidget.h"
+
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    std::cout << "Hello form Detector" << std::endl;
-
+    DetectorWidget w;
+    w.show();
     return a.exec();
 }

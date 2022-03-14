@@ -33,15 +33,26 @@ set(
     SOURCES
         detector.cpp
         detectorwidget.cpp
+        detectorgraph.cpp
+        sliderwithlabel.cpp
+        mathutils.cpp
         ${ANALYZER_DIR}/nuclidelibrary.cpp
+        ${ANALYZER_DIR}/graph.cpp
+        ${ANALYZER_DIR}/graphcanvas.cpp
 )
 
 # HEADERS
 set (
     HEADERS
         detectorwidget.h
+        detectorgraph.h
+        sliderwithlabel.h
+        mathutils.h
+        ${ANALYZER_DIR}/view.h
         ${ANALYZER_DIR}/types.h
         ${ANALYZER_DIR}/nuclidelibrary.h
+        ${ANALYZER_DIR}/graph.h
+        ${ANALYZER_DIR}/graphcanvas.h
 )
 
 add_executable(detector ${SOURCES} ${HEADERS})
@@ -73,6 +84,12 @@ target_compile_options(
     detector
         PRIVATE
             -Wall -Wextra -pedantic -Werror
+)
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
+    ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json
+    COPYONLY
 )
 
 # Package

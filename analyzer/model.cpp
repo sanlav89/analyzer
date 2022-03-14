@@ -7,7 +7,7 @@ namespace model {
 
 Model::Model()
     : m_identifyMethod{new SimpleMethod}
-    , m_library{new NuclideLibrary}
+    , m_library{new NuclideLibrary{"nuclidelibrary.json"}}
     , m_isStarted{false}
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 0);
@@ -23,7 +23,7 @@ void Model::removeObserver(ObserverPtr observer)
     m_observers.remove(observer);
 }
 
-void Model::setEnPoly(const enpoly_t &enpoly)
+void Model::setEnPoly(const poly_t &enpoly)
 {
     m_enpoly = enpoly;
     notifyUpdateEnergyScale();

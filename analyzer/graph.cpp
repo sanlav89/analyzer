@@ -95,6 +95,7 @@ Graph::~Graph()
 void Graph::updateSpectrum(const spectrum_t &spectrum)
 {
     assert(spectrum.size() == SpectrumSize);
+
     auto n = 0;
     auto ymax = 0;
     auto countsValue = [&n, &ymax, spectrum] {
@@ -113,6 +114,7 @@ void Graph::updateSpectrum(const spectrum_t &spectrum)
     if (ymax < 2) {
         ymax = 2;
     }
+
     setAxisScale(QwtPlot::xBottom, 0, m_energyValues.back());
     setAxisScale(QwtPlot::yLeft, 1, ymax * 5);
     replot();
@@ -176,7 +178,7 @@ void Graph::updateNuclides(const nuclides_t &nuclides)
     replot();
 }
 
-void Graph::updateEnergyScale(const enpoly_t &enpoly)
+void Graph::updateEnergyScale(const poly_t &enpoly)
 {
     auto n = 1;
     auto energyValue = [&n, enpoly]() {
