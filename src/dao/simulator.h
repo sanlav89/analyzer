@@ -2,26 +2,41 @@
 
 #include "detectoraccess.h"
 #include <QTimer>
+#include "spectrummeasured.h"
+#include "spectrummodeling.h"
 
 namespace dao {
 
-using filename_t  = std::string;
-using filelist_t = std::vector<filename_t>;
+using namespace sim;
 
 class Simulator : public DetectorAccess
 {
     Q_OBJECT
 public:
-    explicit Simulator(const filelist_t &filelist, const double &countRate, QObject *parent = nullptr);
+
+    enum Mode {
+        Modeling,
+        Measured
+    };
+
+    explicit Simulator(const path_t &path, const double &countRate, QObject *parent = nullptr);
+    void setActivity(size_t id, activity_t activity);
+    void setMode(Mode mode);
+    void changeSpectrumName(const std::string &name);
+    spectrum_t spectrum() const;
+    std::vector<std::string> nuclideNames() const;
+    std::vector<std::string> spectrumNames() const;
+    poly_t energyPoly() const;
+    double countRate() const;
 
 private:
 
-    QTimer *m_timer;
+    int m_mode;
     double m_countRate;
-    std::vector<spectrum_t> m_spectrums;
+    QTimer *m_timer;
+    std::unique_ptr<SpectrumModeling> m_fromModel;
+    std::unique_ptr<SpectrumMeasured> m_fromFiles;
     data_t m_dataToRead;
-
-    spectrum_t readFromBinaryFile(const filename_t &filename);
 
 private slots:
     void onTimeout();

@@ -7,6 +7,17 @@
 
 namespace model {
 
+NuclideLibraryPtr NuclideLibrary::m_instance = nullptr;
+
+
+NuclideLibraryPtr NuclideLibrary::instance(const std::string &filename)
+{
+    if (m_instance == nullptr) {
+        m_instance = NuclideLibraryPtr{new NuclideLibrary(filename)};
+    }
+    return m_instance;
+}
+
 NuclideLibrary::NuclideLibrary(const std::string &filename)
 {
     QFile jsonFile(filename.c_str());
@@ -57,19 +68,14 @@ std::vector<std::string> NuclideLibrary::nuclideNames() const
     return result;
 }
 
+size_t NuclideLibrary::numClasses() const
+{
+    return m_library.size();
+}
+
 nuclides_t NuclideLibrary::nuclides([[maybe_unused]]const probas_t &probas) const
 {
-//    auto argmax = std::max_element(probas.begin(), probas.end());
-    qDebug() << probas;
-    nuclides_t result;
-    for (auto i = 0u; i < probas.size(); i++) {
-        if (probas[i] > 0.2) {
-            result.push_back(m_library.at(i));
-            result.back().activity = probas[i];
-        }
-    }
-//    size_t id = std::distance(probas.begin(), argmax);
-//    {m_library.at(id)/*, m_library.at(8)*/};
+    nuclides_t result{m_library.at(4), m_library.at(8)};
     return result;
 }
 

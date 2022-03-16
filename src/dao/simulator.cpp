@@ -8,28 +8,59 @@
 
 namespace dao {
 
-Simulator::Simulator(const filelist_t &filelist, const double &countRate, QObject *parent)
+Simulator::Simulator(const path_t &path, const double &countRate, QObject *parent)
     : DetectorAccess(parent)
-    , m_timer(new QTimer(this))
+    , m_mode(Modeling)
     , m_countRate(countRate)
+    , m_timer(new QTimer(this))
+    , m_fromModel(new SpectrumModeling)
+    , m_fromFiles(new SpectrumMeasured)
 {
-    assert(filelist.size() > 0);
-    m_spectrums.reserve(filelist.size());
-    for (const auto &filename : filelist) {
-        m_spectrums.push_back(readFromBinaryFile(filename));
-    }
+    m_fromFiles->loadFromDirectory(path);
     connect(m_timer, &QTimer::timeout, this, &Simulator::onTimeout);
     m_timer->start(1000);
 }
 
-spectrum_t Simulator::readFromBinaryFile(const filename_t &filename)
+void Simulator::setActivity(size_t id, activity_t activity)
 {
-    spectrum_t result;
-    std::ifstream input(filename, std::ios::in | std::ios::binary);
-    char *buffer = reinterpret_cast<char *>(result.data());
-    input.read(buffer, sizeof(sample_t) * (SpectrumSize - 1));
-    result[SpectrumSize - 1] = 0;
-    return result;
+    assert(m_mode == Modeling);
+    m_fromModel->update(id, activity);
+}
+
+void Simulator::setMode(Simulator::Mode mode)
+{
+    m_mode = mode;
+}
+
+void Simulator::changeSpectrumName(const std::string &name)
+{
+    assert(m_mode == Measured);
+    m_fromFiles->changeCurrentName(name);
+}
+
+spectrum_t Simulator::spectrum() const
+{
+    return (m_mode == Modeling) ? m_fromModel->spectrum() : m_fromFiles->spectrum();
+}
+
+std::vector<std::string> Simulator::nuclideNames() const
+{
+    return m_fromModel->nuclideNames();
+}
+
+std::vector<std::string> Simulator::spectrumNames() const
+{
+    return m_fromFiles->names();
+}
+
+poly_t Simulator::energyPoly() const
+{
+    return m_fromModel->energyPoly();
+}
+
+double Simulator::countRate() const
+{
+    return m_countRate;
 }
 
 void Simulator::onTimeout()
@@ -40,11 +71,9 @@ void Simulator::onTimeout()
                 );
     std::fill(m_dataToRead.second.begin(), m_dataToRead.second.end(), 0);
 
-    for (const auto &spectrum : m_spectrums) {
-        auto tmp = utils::math::generatePortion(spectrum, m_countRate);
-        for (auto i = 0u; i < m_dataToRead.second.size(); i++) {
-            m_dataToRead.second[i] += tmp[i];
-        }
+    auto tmp = mathutils::generatePortion(spectrum(), m_countRate);
+    for (auto i = 0u; i < m_dataToRead.second.size(); i++) {
+        m_dataToRead.second[i] += tmp[i];
     }
 
     emit readyRead(m_dataToRead);

@@ -8,5 +8,7 @@ using separator_t = char;
 
 bool read_features_csv(std::istream& stream, spectrum_t& spectrum, separator_t sep = ',');
 
+spectrum_t readFromSpeFile(const filename_t &filename);
+
 }
 
