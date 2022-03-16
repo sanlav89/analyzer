@@ -8,8 +8,8 @@ Controller::Controller(Analyzer *model, View *view, QObject *parent)
     : QObject(parent)
     , m_model(std::move(model))
     , m_view(view)
-//    , m_detector(new TcpAccess(9999, this))
-    , m_detector(new SimulatorAccess(this))
+    , m_detector(new TcpAccess(9999, this))
+//    , m_detector(new SimulatorAccess(this))
 {
     m_model->setEnPoly({-30.76253,2.686544,0.0007731202,-1.12527E-06,5.746466E-10});
 
