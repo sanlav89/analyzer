@@ -75,7 +75,14 @@ size_t NuclideLibrary::numClasses() const
 
 nuclides_t NuclideLibrary::nuclides([[maybe_unused]]const probas_t &probas) const
 {
-    nuclides_t result{m_library.at(4), m_library.at(8)};
+    qDebug() << probas;
+    nuclides_t result;
+    for (auto i = 0u; i < probas.size(); i++) {
+        if (probas[i] > 0.2) {
+            result.push_back(m_library.at(i));
+            result.back().activity = probas[i];
+        }
+    }
     return result;
 }
 

@@ -43,6 +43,7 @@ file(GLOB SOURCES
     src/ctrl/*.cpp
     src/dao/*.cpp
     src/utils/*.cpp
+    src/sim/*.cpp
 )
 
 file(GLOB HEADERS
@@ -52,6 +53,7 @@ file(GLOB HEADERS
     src/ctrl/*.h
     src/dao/*.h
     src/utils/*.h
+    src/sim/*.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

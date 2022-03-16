@@ -14,7 +14,7 @@
 
 using namespace model;
 using namespace view;
-using namespace dao;
+using namespace sim;
 
 namespace ba = boost::asio;
 

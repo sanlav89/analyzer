@@ -1,10 +1,11 @@
 #pragma once
 
-#include "types.h"
+#include "utils/types.h"
 #include <map>
 
 namespace sim {
 
+using namespace utils;
 using path_t = std::string;
 
 class SpectrumMeasured

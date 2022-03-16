@@ -3,11 +3,6 @@
 #include <QDir>
 #include <QFile>
 #include <QDataStream>
-#include "mathutils.h"
-#include <QDebug>
-#include <fstream>
-
-using namespace mathutils;
 
 SimulatorWidget::SimulatorWidget(QWidget *parent)
     : QWidget(parent)

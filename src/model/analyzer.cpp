@@ -1,12 +1,12 @@
 #include "analyzer.h"
-#include "simulator.h"
 #include "convneuralnet.h"
+#include <algorithm>
 
 namespace model {
 
 Analyzer::Analyzer()
     : m_identifyMethod{new ConvNeuralNet{"./data/saved_model", SpectrumSize}}
-    , m_library{new NuclideLibrary{"./data/nuclidelibrary.json"}}
+    , m_library{NuclideLibrary::instance("./data/nuclidelibrary.json")}
     , m_isStarted{false}
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 1);

@@ -5,7 +5,7 @@
 
 namespace sim {
 
-using namespace mathutils;
+using namespace utils::math;
 
 SpectrumModeling::SpectrumModeling()
     : m_library(NuclideLibrary::instance("nuclidelibrary.json"))

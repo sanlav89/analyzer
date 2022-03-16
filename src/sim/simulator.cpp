@@ -6,10 +6,10 @@
 #include <cstdlib>
 #include "mathutils.h"
 
-namespace dao {
+namespace sim {
 
 Simulator::Simulator(const path_t &path, const double &countRate, QObject *parent)
-    : DetectorAccess(parent)
+    : QObject(parent)
     , m_mode(Modeling)
     , m_countRate(countRate)
     , m_timer(new QTimer(this))
@@ -71,7 +71,7 @@ void Simulator::onTimeout()
                 );
     std::fill(m_dataToRead.second.begin(), m_dataToRead.second.end(), 0);
 
-    auto tmp = mathutils::generatePortion(spectrum(), m_countRate);
+    auto tmp = utils::math::generatePortion(spectrum(), m_countRate);
     for (auto i = 0u; i < m_dataToRead.second.size(); i++) {
         m_dataToRead.second[i] += tmp[i];
     }

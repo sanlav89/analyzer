@@ -5,11 +5,9 @@
 #include "spectrummeasured.h"
 #include "spectrummodeling.h"
 
-namespace dao {
+namespace sim {
 
-using namespace sim;
-
-class Simulator : public DetectorAccess
+class Simulator : public QObject
 {
     Q_OBJECT
 public:
@@ -40,6 +38,9 @@ private:
 
 private slots:
     void onTimeout();
+
+signals:
+    void readyRead(data_t);
 
 };
 
