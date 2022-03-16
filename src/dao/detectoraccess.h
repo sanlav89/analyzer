@@ -22,7 +22,5 @@ signals:
     void readyRead(data_t);
 };
 
-using DetectorAccessPtr = DetectorAccess*;
-
 }
 

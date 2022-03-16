@@ -2,18 +2,22 @@
 
 #include "utils/types.h"
 
+namespace model {
+
 namespace idf {
 
 using namespace utils;
 
-class IdentifyMethod
+class Method
 {
 public:
-    virtual ~IdentifyMethod() = default;
+    virtual ~Method() = default;
     virtual probas_t identify(const spectrum_t &spectrum) = 0;
 };
 
-using IdentifyMethodPtr = std::unique_ptr<IdentifyMethod>;
+using MethodPtr = std::unique_ptr<Method>;
+
+}
 
 }
 

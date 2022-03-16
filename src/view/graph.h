@@ -19,7 +19,7 @@ public:
     Graph(QWidget *parent = nullptr);
     ~Graph();
 
-    virtual void updateSpectrum(const spectrum_t &spectrum);
+    void updateSpectrum(const spectrum_t &spectrum);
     void updateNuclides(const nuclides_t &nuclides);
     void updateEnergyScale(const poly_t &enpoly);
 

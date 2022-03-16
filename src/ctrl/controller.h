@@ -3,29 +3,24 @@
 #include <QObject>
 #include "view/view.h"
 #include "dao/detectoraccess.h"
-#include "model/model.h"
+#include "model/analyzer.h"
+
+namespace ctrl {
 
 using namespace view;
 using namespace dao;
 using namespace model;
 
-namespace ctrl {
-
-using ViewPtr = View*;
-
 class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(ModelPtr model, ViewPtr view, QObject *parent = nullptr);
-    void setDetector(DetectorAccessPtr detector);
+    explicit Controller(Analyzer *model, View *view, QObject *parent = nullptr);
 
 private:
-    ModelPtr m_model;
-    ViewPtr m_view;
-    DetectorAccessPtr m_detector;
-
-signals:
+    Analyzer *m_model;
+    View *m_view;
+    DetectorAccess *m_detector;
 
 private slots:
     void onStartBtn();

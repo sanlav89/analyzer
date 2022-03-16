@@ -1,4 +1,4 @@
-#include "tfidentifier.h"
+#include "convneuralnet.h"
 
 #include <ios>
 #include <iterator>
@@ -13,9 +13,11 @@
 #include <cmath>
 #include <iostream>
 
+namespace model {
+
 namespace idf {
 
-void TfIdentifier::delete_tf_session(TF_Session *tf_session)
+void ConvNeuralNet::delete_tf_session(TF_Session *tf_session)
 {
     tf_status status{TF_NewStatus(), TF_DeleteStatus};
     TF_DeleteSession(tf_session, status.get());
@@ -36,7 +38,7 @@ static void dummy_deleter(void *, size_t, void *)
 {
 }
 
-TfIdentifier::TfIdentifier(const std::string &modelpath, const int &length)
+ConvNeuralNet::ConvNeuralNet(const std::string &modelpath, const int &length)
     : m_length(length)
 {
     tf_status status{TF_NewStatus(), TF_DeleteStatus};
@@ -75,7 +77,7 @@ TfIdentifier::TfIdentifier(const std::string &modelpath, const int &length)
 }
 
 
-probas_t TfIdentifier::identify(const spectrum_t &spectrum)
+probas_t ConvNeuralNet::identify(const spectrum_t &spectrum)
 {
     assert(m_length == spectrum.size());
 
@@ -138,28 +140,11 @@ probas_t TfIdentifier::identify(const spectrum_t &spectrum)
     return probas;
 }
 
-size_t TfIdentifier::num_classes() const
+size_t ConvNeuralNet::num_classes() const
 {
     return 10;
 }
 
-bool read_features_csv(std::istream &stream, spectrum_t &spectrum, separator_t sep)
-{
-    std::string line;
-    std::getline(stream, line);
-    std::stringstream linestream{line};
-    std::string cell;
-
-    auto idx = 0;
-    while (std::getline(linestream, cell, sep)) {
-        if (!cell.empty()) {
-            spectrum[idx++] = std::stof(cell);
-        }
-    }
-    return stream.good();
 }
 
-
-
 }
-

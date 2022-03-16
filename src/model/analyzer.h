@@ -2,24 +2,22 @@
 
 #include <list>
 #include "model/nuclidelibrary.h"
-#include "model/identifymethod.h"
+#include "model/method.h"
 #include "view/observer.h"
+
+namespace model {
 
 using namespace idf;
 using namespace view;
 
-namespace model {
-
-using ObserverPtr = Observer*;
-
-class Model
+class Analyzer
 {
 public:
-    Model();
-    ~Model() = default;
+    Analyzer();
+    ~Analyzer() = default;
 
-    void addObserver(ObserverPtr observer);
-    void removeObserver(ObserverPtr observer);
+    void addObserver(Observer *observer);
+    void removeObserver(Observer *observer);
 
     void setEnPoly(const poly_t &enpoly);
     void receiveNewSpectrumData(const spectrum_t &spectrum);
@@ -33,19 +31,17 @@ private:
     void notifyNuclidesChanged();
     void notifyUpdateEnergyScale();
 
-    std::list<ObserverPtr> m_observers;
+    std::list<Observer *> m_observers;
 
     spectrum_t m_spectrum;
     nuclides_t m_nuclides;
     poly_t m_enpoly;
 
-    IdentifyMethodPtr m_identifyMethod;
+    MethodPtr m_identifyMethod;
     NuclideLibraryPtr m_library;
     bool m_isStarted;
 
 };
-
-using ModelPtr = std::unique_ptr<Model>;
 
 }
 

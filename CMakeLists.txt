@@ -34,6 +34,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/ctrl)
 include_directories(${CMAKE_SOURCE_DIR}/src/dao)
 include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 
+# SOURCES
 file(GLOB SOURCES
     src/*.cpp
     src/model/*.cpp
@@ -42,6 +43,8 @@ file(GLOB SOURCES
     src/dao/*.cpp
     src/utils/*.cpp
 )
+
+# HEADERS
 file(GLOB HEADERS
     src/*.h
     src/model/*.h
@@ -50,49 +53,6 @@ file(GLOB HEADERS
     src/dao/*.h
     src/utils/*.h
 )
-
-## SOURCES
-#set(
-#    SOURCES
-#        analyzer.cpp
-#        model.cpp
-#        mainwidget.cpp
-#        simulator.cpp
-#        nuclidelibrary.cpp
-#        graph.cpp
-#        controller.cpp
-#        graphcanvas.cpp
-#        tfidentifier.cpp
-#        mathutils.cpp
-#        session.cpp
-#        tcpserverthread.cpp
-#        tcpaccess.cpp
-#)
-
-## HEADERS
-#set (
-#    HEADERS
-#        types.h
-#        detectoraccess.h
-#        view.h
-#        identifymethod.h
-#        mlidentifier.h
-#        simplemethod.h
-#        deconvmethod.h
-#        model.h
-#        nuclidelibrary.h
-#        mainwidget.h
-#        simulator.h
-#        graph.h
-#        controller.h
-#        observer.h
-#        graphcanvas.h
-#        tfidentifier.h
-#        mathutils.h
-#        session.h
-#        tcpserverthread.h
-#        tcpaccess.h
-#)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 

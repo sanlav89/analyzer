@@ -2,25 +2,24 @@
 
 #include <tensorflow/c/c_api.h>
 
-#include "identifymethod.h"
+#include "method.h"
+#include "utils/types.h"
+
+namespace model {
 
 namespace idf {
 
-using separator_t = char;
-
-bool read_features_csv(std::istream& stream, spectrum_t& spectrum, separator_t sep = ',');
-
-class TfIdentifier : public IdentifyMethod
+class ConvNeuralNet : public Method
 {
 public:
 
     using features_t = std::vector<float>;
 
-    TfIdentifier(const std::string &modelpath, const int &length);
+    ConvNeuralNet(const std::string &modelpath, const int &length);
 
-    TfIdentifier(const TfIdentifier &) = delete;
+    ConvNeuralNet(const ConvNeuralNet &) = delete;
 
-    TfIdentifier& operator=(const TfIdentifier &) = delete;
+    ConvNeuralNet& operator=(const ConvNeuralNet &) = delete;
 
     probas_t identify(const spectrum_t &spectrum) override;
 
@@ -50,3 +49,4 @@ protected:
 
 }
 
+}

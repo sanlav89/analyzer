@@ -1,37 +1,34 @@
-#include "model.h"
-
-#include "simplemethod.h"
+#include "analyzer.h"
 #include "simulator.h"
-#include "tfidentifier.h"
+#include "convneuralnet.h"
 
 namespace model {
 
-Model::Model()
-//    : m_identifyMethod{new SimpleMethod}
-    : m_identifyMethod{new TfIdentifier{"d:/Workspace/OTUS/analyzer/ml/saved_model", SpectrumSize}}
+Analyzer::Analyzer()
+    : m_identifyMethod{new ConvNeuralNet{"d:/Workspace/OTUS/analyzer/ml/saved_model", SpectrumSize}}
     , m_library{new NuclideLibrary{"nuclidelibrary.json"}}
     , m_isStarted{false}
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 1);
 }
 
-void Model::addObserver(ObserverPtr observer)
+void Analyzer::addObserver(Observer *observer)
 {
     m_observers.push_back(observer);
 }
 
-void Model::removeObserver(ObserverPtr observer)
+void Analyzer::removeObserver(Observer *observer)
 {
     m_observers.remove(observer);
 }
 
-void Model::setEnPoly(const poly_t &enpoly)
+void Analyzer::setEnPoly(const poly_t &enpoly)
 {
     m_enpoly = enpoly;
     notifyUpdateEnergyScale();
 }
 
-void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
+void Analyzer::receiveNewSpectrumData(const spectrum_t &spectrum)
 {
     if (!m_isStarted) {
         return;
@@ -54,7 +51,7 @@ void Model::receiveNewSpectrumData(const spectrum_t &spectrum)
     notifyNuclidesChanged();
 }
 
-void Model::clearSpectrum()
+void Analyzer::clearSpectrum()
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 1);
     m_nuclides.clear();
@@ -62,7 +59,7 @@ void Model::clearSpectrum()
     notifyNuclidesChanged();
 }
 
-void Model::notifySpectrumChanged()
+void Analyzer::notifySpectrumChanged()
 {
     if (m_observers.empty()) {
         return;
@@ -72,7 +69,7 @@ void Model::notifySpectrumChanged()
     }
 }
 
-void Model::notifyNuclidesChanged()
+void Analyzer::notifyNuclidesChanged()
 {
     if (m_observers.empty()) {
         return;
@@ -82,7 +79,7 @@ void Model::notifyNuclidesChanged()
     }
 }
 
-void Model::notifyUpdateEnergyScale()
+void Analyzer::notifyUpdateEnergyScale()
 {
     if (m_observers.empty()) {
         return;
@@ -92,7 +89,7 @@ void Model::notifyUpdateEnergyScale()
     }
 }
 
-void Model::setIsStarted(bool isStarted)
+void Analyzer::setIsStarted(bool isStarted)
 {
     m_isStarted = isStarted;
 }

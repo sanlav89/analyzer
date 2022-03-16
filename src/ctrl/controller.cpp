@@ -1,11 +1,13 @@
 #include "controller.h"
+#include "dao/tcpaccess.h"
 
 namespace ctrl {
 
-Controller::Controller(ModelPtr model, ViewPtr view, QObject *parent)
+Controller::Controller(Analyzer *model, View *view, QObject *parent)
     : QObject(parent)
     , m_model(std::move(model))
     , m_view(view)
+    , m_detector(new TcpAccess(9999, this))
 {
     m_model->setEnPoly({-30.76253,2.686544,0.0007731202,-1.12527E-06,5.746466E-10});
 
@@ -19,11 +21,8 @@ Controller::Controller(ModelPtr model, ViewPtr view, QObject *parent)
 
     // Init model state
     m_model->setIsStarted(false);
-}
 
-void Controller::setDetector(DetectorAccessPtr detector)
-{
-    m_detector = std::move(detector);
+    // Connection with detector
     connect(m_detector, &DetectorAccess::readyRead, this, &Controller::onDetectorReadyRead);
 }
 
