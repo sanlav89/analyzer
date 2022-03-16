@@ -21,7 +21,7 @@ public:
     void addObserver(ObserverPtr observer);
     void removeObserver(ObserverPtr observer);
 
-    void setEnPoly(const enpoly_t &enpoly);
+    void setEnPoly(const poly_t &enpoly);
     void receiveNewSpectrumData(const spectrum_t &spectrum);
     void clearSpectrum();
 
@@ -37,7 +37,7 @@ private:
 
     spectrum_t m_spectrum;
     nuclides_t m_nuclides;
-    enpoly_t m_enpoly;
+    poly_t m_enpoly;
 
     IdentifyMethodPtr m_identifyMethod;
     NuclideLibraryPtr m_library;

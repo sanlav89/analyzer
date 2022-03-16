@@ -3,14 +3,17 @@
 #include "types.h"
 #include <iostream>
 #include <map>
+#include <list>
 
 namespace model {
 
 class NuclideLibrary
 {
 public:
-    NuclideLibrary();
-    nuclides_t nuclides(const probas_t &probas);
+    NuclideLibrary(const std::string &filename);
+    nuclides_t nuclides(const probas_t &probas) const;
+    nuclides_t nuclidesAll() const;
+    std::vector<std::string> nuclideNames() const;
 
 private:
     std::map<int, nuclide_t> m_library;

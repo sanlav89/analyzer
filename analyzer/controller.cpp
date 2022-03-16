@@ -21,10 +21,10 @@ Controller::Controller(ModelPtr model, ViewPtr view, QObject *parent)
     m_model->setIsStarted(false);
 }
 
-void Controller::setDetector(DetectorPtr detector)
+void Controller::setDetector(DetectorAccessPtr detector)
 {
     m_detector = std::move(detector);
-    connect(m_detector, &Detector::readyRead, this, &Controller::onDetectorReadyRead);
+    connect(m_detector, &DetectorAccess::readyRead, this, &Controller::onDetectorReadyRead);
 }
 
 void Controller::onStartBtn()
@@ -44,9 +44,9 @@ void Controller::onClearBtn()
     m_model->clearSpectrum();
 }
 
-void Controller::onDetectorReadyRead()
+void Controller::onDetectorReadyRead(data_t data)
 {
-    m_model->receiveNewSpectrumData(m_detector->read().second);
+    m_model->receiveNewSpectrumData(data.second);
 }
 
 }

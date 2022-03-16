@@ -28,7 +28,7 @@ MainWidget::MainWidget(View *parent)
 
 }
 
-void MainWidget::updateEnergyScale(const enpoly_t &enpoly)
+void MainWidget::updateEnergyScale(const poly_t &enpoly)
 {
     m_graph->updateEnergyScale(enpoly);
 }

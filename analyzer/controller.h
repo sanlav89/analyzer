@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include "view.h"
-#include "detector.h"
+#include "detectoraccess.h"
 #include "model.h"
 
 using namespace view;
@@ -18,12 +18,12 @@ class Controller : public QObject
     Q_OBJECT
 public:
     explicit Controller(ModelPtr model, ViewPtr view, QObject *parent = nullptr);
-    void setDetector(DetectorPtr detector);
+    void setDetector(DetectorAccessPtr detector);
 
 private:
     ModelPtr m_model;
     ViewPtr m_view;
-    DetectorPtr m_detector;
+    DetectorAccessPtr m_detector;
 
 signals:
 
@@ -31,7 +31,7 @@ private slots:
     void onStartBtn();
     void onPauseBtn();
     void onClearBtn();
-    void onDetectorReadyRead();
+    void onDetectorReadyRead(data_t data);
 
 };
 

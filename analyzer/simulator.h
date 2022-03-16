@@ -1,6 +1,6 @@
 #pragma once
 
-#include "detector.h"
+#include "detectoraccess.h"
 #include <QTimer>
 
 namespace dao {
@@ -8,12 +8,11 @@ namespace dao {
 using filename_t  = std::string;
 using filelist_t = std::vector<filename_t>;
 
-class Simulator : public Detector
+class Simulator : public DetectorAccess
 {
     Q_OBJECT
 public:
     explicit Simulator(const filelist_t &filelist, const double &countRate, QObject *parent = nullptr);
-    data_t read() override;
 
 private:
 

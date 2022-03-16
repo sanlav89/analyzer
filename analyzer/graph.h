@@ -19,9 +19,12 @@ public:
     Graph(QWidget *parent = nullptr);
     ~Graph();
 
-    void updateSpectrum(const spectrum_t &spectrum);
+    virtual void updateSpectrum(const spectrum_t &spectrum);
     void updateNuclides(const nuclides_t &nuclides);
-    void updateEnergyScale(const enpoly_t &enpoly);
+    void updateEnergyScale(const poly_t &enpoly);
+
+protected:
+    QwtPlotCurve *m_curve;
 
 private:
 
@@ -30,7 +33,6 @@ private:
 
     const size_t MaxNuclidesCount = 10;
 
-    QwtPlotCurve *m_curve;
     QwtText m_activityInfo;
     QwtPlotTextLabel *m_activityLabel;
     std::vector<qreal> m_energyValues;

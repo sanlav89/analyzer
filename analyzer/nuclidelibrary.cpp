@@ -7,9 +7,9 @@
 
 namespace model {
 
-NuclideLibrary::NuclideLibrary()
+NuclideLibrary::NuclideLibrary(const std::string &filename)
 {
-    QFile jsonFile("nuclidelibrary.json");
+    QFile jsonFile(filename.c_str());
     jsonFile.open(QFile::ReadOnly);
     auto jsonObject = QJsonDocument().fromJson(jsonFile.readAll()).object();
 
@@ -38,9 +38,38 @@ NuclideLibrary::NuclideLibrary()
     }
 }
 
-nuclides_t NuclideLibrary::nuclides([[maybe_unused]]const probas_t &probas)
+nuclides_t NuclideLibrary::nuclidesAll() const
 {
-    nuclides_t result{m_library[4], m_library[8]};
+    nuclides_t result(m_library.size());
+    auto idx = 0;
+    for (const auto &node : m_library) {
+        result[idx++] = node.second;
+    }
+    return result;
+}
+
+std::vector<std::string> NuclideLibrary::nuclideNames() const
+{
+    std::vector<std::string> result;
+    for (const auto &node : m_library) {
+        result.push_back(node.second.name);
+    }
+    return result;
+}
+
+nuclides_t NuclideLibrary::nuclides([[maybe_unused]]const probas_t &probas) const
+{
+//    auto argmax = std::max_element(probas.begin(), probas.end());
+    qDebug() << probas;
+    nuclides_t result;
+    for (auto i = 0u; i < probas.size(); i++) {
+        if (probas[i] > 0.2) {
+            result.push_back(m_library.at(i));
+            result.back().activity = probas[i];
+        }
+    }
+//    size_t id = std::distance(probas.begin(), argmax);
+//    {m_library.at(id)/*, m_library.at(8)*/};
     return result;
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <chrono>
+#include <string>
 
 const int SpectrumSize = 1024;
 
@@ -15,7 +16,7 @@ using nuclideid_t = int;
 using activity_t = double;
 using intensity_t = double;
 using energy_t = double;
-using enpoly_t = std::vector<double>;
+using poly_t = std::vector<double>;
 using color_t = int;
 
 struct line_t {
