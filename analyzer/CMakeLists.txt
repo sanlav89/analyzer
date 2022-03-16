@@ -41,7 +41,7 @@ set(
         tfidentifier.cpp
         mathutils.cpp
         session.cpp
-        tcpserver.cpp
+#        tcpserver.cpp
 )
 
 # HEADERS
@@ -65,7 +65,7 @@ set (
         tfidentifier.h
         mathutils.h
         session.h
-        tcpserver.h
+#        tcpserver.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

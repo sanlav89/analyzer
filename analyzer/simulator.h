@@ -13,7 +13,6 @@ class Simulator : public DetectorAccess
     Q_OBJECT
 public:
     explicit Simulator(const filelist_t &filelist, const double &countRate, QObject *parent = nullptr);
-    data_t read() override;
 
 private:
 

@@ -31,7 +31,7 @@ private slots:
     void onStartBtn();
     void onPauseBtn();
     void onClearBtn();
-    void onDetectorReadyRead();
+    void onDetectorReadyRead(data_t data);
 
 };
 

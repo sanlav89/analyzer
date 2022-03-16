@@ -22,11 +22,6 @@ Simulator::Simulator(const filelist_t &filelist, const double &countRate, QObjec
     m_timer->start(1000);
 }
 
-data_t Simulator::read()
-{
-    return m_dataToRead;
-}
-
 spectrum_t Simulator::readFromBinaryFile(const filename_t &filename)
 {
     spectrum_t result;
@@ -52,7 +47,7 @@ void Simulator::onTimeout()
         }
     }
 
-    emit readyRead();
+    emit readyRead(m_dataToRead);
 }
 
 }

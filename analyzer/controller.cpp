@@ -1,5 +1,4 @@
 #include "controller.h"
-#include "tcpserver.h"
 
 namespace ctrl {
 
@@ -20,9 +19,6 @@ Controller::Controller(ModelPtr model, ViewPtr view, QObject *parent)
 
     // Init model state
     m_model->setIsStarted(false);
-
-    m_detector = new TcpServer(9999, this);
-    connect(m_detector, &DetectorAccess::readyRead, this, &Controller::onDetectorReadyRead);
 }
 
 void Controller::setDetector(DetectorAccessPtr detector)
@@ -48,9 +44,9 @@ void Controller::onClearBtn()
     m_model->clearSpectrum();
 }
 
-void Controller::onDetectorReadyRead()
+void Controller::onDetectorReadyRead(data_t data)
 {
-    m_model->receiveNewSpectrumData(m_detector->read().second);
+    m_model->receiveNewSpectrumData(data.second);
 }
 
 }
