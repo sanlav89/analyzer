@@ -1,8 +1,10 @@
 #pragma once
 
-#include "types.h"
+#include "utils/types.h"
 
 namespace idf {
+
+using namespace utils;
 
 class IdentifyMethod
 {

@@ -1,9 +1,11 @@
 #pragma once
 
-#include "types.h"
+#include "utils/types.h"
 #include <QWidget>
 
 namespace view {
+
+using namespace utils;
 
 class View : public QWidget
 {

@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QObject>
-#include "types.h"
+#include "utils/types.h"
 #include <iostream>
 
 namespace dao {
+
+using namespace utils;
 
 class DetectorAccess : public QObject
 {

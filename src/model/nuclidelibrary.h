@@ -1,11 +1,13 @@
 #pragma once
 
-#include "types.h"
+#include "utils/types.h"
 #include <iostream>
 #include <map>
 #include <list>
 
 namespace model {
+
+using namespace utils;
 
 class NuclideLibrary
 {

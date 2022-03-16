@@ -1,8 +1,10 @@
 #pragma once
 
-#include "types.h"
+#include "utils/types.h"
 
 namespace view {
+
+using namespace utils;
 
 class Observer
 {

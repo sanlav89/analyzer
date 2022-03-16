@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QObject>
-#include "view.h"
-#include "detectoraccess.h"
-#include "model.h"
+#include "view/view.h"
+#include "dao/detectoraccess.h"
+#include "model/model.h"
 
 using namespace view;
 using namespace dao;

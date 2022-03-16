@@ -6,6 +6,8 @@
 #include <chrono>
 #include <string>
 
+namespace utils {
+
 const int SpectrumSize = 1024;
 
 using sample_t = int;
@@ -34,4 +36,6 @@ struct nuclide_t {
 using nuclides_t = std::vector<nuclide_t>;
 using spectrum_t = std::array<sample_t, SpectrumSize>;
 using data_t = std::pair<timestamp_t, spectrum_t>;
+
+}
 

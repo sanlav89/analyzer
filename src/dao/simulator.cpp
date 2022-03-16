@@ -41,7 +41,7 @@ void Simulator::onTimeout()
     std::fill(m_dataToRead.second.begin(), m_dataToRead.second.end(), 0);
 
     for (const auto &spectrum : m_spectrums) {
-        auto tmp = mathutils::generatePortion(spectrum, m_countRate);
+        auto tmp = utils::math::generatePortion(spectrum, m_countRate);
         for (auto i = 0u; i < m_dataToRead.second.size(); i++) {
             m_dataToRead.second[i] += tmp[i];
         }

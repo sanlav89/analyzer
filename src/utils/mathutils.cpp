@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <numeric>
 
-namespace mathutils {
+namespace utils {
+
+namespace math {
 
 vector_t calcEnergy(const poly_t &poly, int channels)
 {
@@ -81,6 +83,8 @@ spectrum_t generatePortion(const spectrum_t &spectrum, const double &countRate)
         }
     }
     return result;
+}
+
 }
 
 }

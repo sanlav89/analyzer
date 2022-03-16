@@ -1,13 +1,10 @@
 #include <iostream>
-
-//#include "simulator.h"
-#include "tcpaccess.h"
-#include "view.h"
-#include "model.h"
-
 #include <QApplication>
-#include "mainwidget.h"
-#include "controller.h"
+
+#include "dao/tcpaccess.h"
+#include "model/model.h"
+#include "view/mainwidget.h"
+#include "ctrl/controller.h"
 
 int main(int argc, char *argv[])
 {

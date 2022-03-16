@@ -1,9 +1,9 @@
 #pragma once
 
 #include <list>
-#include "nuclidelibrary.h"
-#include "identifymethod.h"
-#include "observer.h"
+#include "model/nuclidelibrary.h"
+#include "model/identifymethod.h"
+#include "view/observer.h"
 
 using namespace idf;
 using namespace view;

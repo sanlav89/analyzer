@@ -4,9 +4,9 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
-#include "view.h"
-#include "graph.h"
-#include "observer.h"
+#include "view/view.h"
+#include "view/graph.h"
+#include "view/observer.h"
 
 namespace view {
 

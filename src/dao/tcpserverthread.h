@@ -2,11 +2,12 @@
 
 #include <QThread>
 #include <boost/asio.hpp>
-#include "types.h"
+#include "utils/types.h"
 
 namespace dao {
 
 namespace ba = boost::asio;
+using namespace utils;
 
 class TcpServerThread : public QThread
 {
