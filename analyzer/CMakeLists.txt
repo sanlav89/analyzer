@@ -12,8 +12,8 @@ set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-#find_package(Boost COMPONENTS filesystem REQUIRED)
-#include_directories(${Boost_INCLUDE_DIR})
+find_package(Boost COMPONENTS system REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 
 # Qwt
 if (WIN32)
@@ -40,6 +40,8 @@ set(
         graphcanvas.cpp
         tfidentifier.cpp
         mathutils.cpp
+        session.cpp
+        tcpserver.cpp
 )
 
 # HEADERS
@@ -62,6 +64,8 @@ set (
         graphcanvas.h
         tfidentifier.h
         mathutils.h
+        session.h
+        tcpserver.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
@@ -80,6 +84,7 @@ target_include_directories(
         PRIVATE
             ${QWT_INCLUDE_DIR}
             ${TF_INCLUDE_DIR}
+            ${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(
@@ -88,6 +93,9 @@ target_link_libraries(
             Qt${QT_VERSION_MAJOR}::Widgets
             ${QWT_LIBRARY}
             ${TF_LIBRARY}
+            ${Boost_LIBRARIES}
+            wsock32
+            ws2_32
 )
 
 # Compiler options
@@ -97,16 +105,16 @@ target_compile_options(
             -Wall -Wextra -pedantic -Werror
 )
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/data/Th228_15_OSGI.spe
-    ${CMAKE_CURRENT_BINARY_DIR}/Th228_15_OSGI.spe
-    COPYONLY
-)
-configure_file(
-    ${CMAKE_SOURCE_DIR}/data/Cs137_15_OSGI.spe
-    ${CMAKE_CURRENT_BINARY_DIR}/Cs137_15_OSGI.spe
-    COPYONLY
-)
+#configure_file(
+#    ${CMAKE_SOURCE_DIR}/data/Th228_15_OSGI.spe
+#    ${CMAKE_CURRENT_BINARY_DIR}/Th228_15_OSGI.spe
+#    COPYONLY
+#)
+#configure_file(
+#    ${CMAKE_SOURCE_DIR}/data/Cs137_15_OSGI.spe
+#    ${CMAKE_CURRENT_BINARY_DIR}/Cs137_15_OSGI.spe
+#    COPYONLY
+#)
 configure_file(
     ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
     ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json

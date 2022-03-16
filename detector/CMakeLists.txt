@@ -91,6 +91,36 @@ target_compile_options(
 )
 
 configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Am241.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Am241.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Ba133.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Ba133.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Co60.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Co60.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Cs137.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Cs137.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Eu152.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Eu152.spe
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/data/Th228.spe
+    ${CMAKE_CURRENT_BINARY_DIR}/measured/Th228.spe
+    COPYONLY
+)
+configure_file(
     ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
     ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json
     COPYONLY

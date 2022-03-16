@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <chrono>
+#include <string>
 
 const int SpectrumSize = 1024;
 

@@ -13,6 +13,8 @@ Graph::Graph(QWidget *parent)
 {
     //  Widget settings
     setMinimumSize(800, 480);
+    setAxisTitle(QwtPlot::yLeft, "Counts");
+    setAxisTitle(QwtPlot::xBottom, "Energy [keV]");
 
     // Init energy scale
     m_energyValues.resize(SpectrumSize);

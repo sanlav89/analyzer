@@ -1,7 +1,10 @@
 #pragma once
 
 #include <QWidget>
-
+#include <QRadioButton>
+#include <QListWidget>
+#include <QGroupBox>
+#include <QMap>
 #include "nuclidelibrary.h"
 #include "detectorgraph.h"
 #include "types.h"
@@ -29,9 +32,16 @@ private:
     NuclideLibrary m_library{"nuclidelibrary.json"};
     DetectorGraph *m_graph;
     SliderWithLabel *m_slider[num_classes];
+    QRadioButton *m_modelSpectrumsRaB;
+    QRadioButton *m_realSpectrumsRaB;
+    QListWidget *m_realSpectrumsLw;
+    QGroupBox *m_slidersGB;
+    QGroupBox *m_realGB;
     QTimer *m_timer;
+    QMap<QListWidgetItem *, spectrum_t> m_spectrumsMap;
+    spectrum_t m_currentSpectrum;
 
-    spectrum_t m_spectrum;
+    data_t m_dataToSend;
     std::vector<qreal> m_energies;
     std::vector<qreal> m_activities;
     nuclides_t m_nuclidesAll;
@@ -44,11 +54,13 @@ private:
     const qreal m_b = -0.003;
     const qreal m_c = 0.5;
     const qreal m_d = -0.002;
-    const qreal m_countRate = 100;
     void recalcSpectrum();
+    void loadMeasurements();
 
 private slots:
     void onActivityChanged(int id, qreal value);
     void onTimeout();
+    void onRadioButtonToggled();
+    void onItemClicked(QListWidgetItem *item);
 
 };
