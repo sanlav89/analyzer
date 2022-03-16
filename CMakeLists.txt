@@ -10,6 +10,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# Packages
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Boost COMPONENTS system REQUIRED)
@@ -27,6 +28,7 @@ if (UNIX)
     set(QWT_LIBRARY "/usr/local/qwt-6.1.5/lib/libqwt.so")
 endif(UNIX)
 
+# Sources
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/model)
 include_directories(${CMAKE_SOURCE_DIR}/src/view)
@@ -34,7 +36,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src/ctrl)
 include_directories(${CMAKE_SOURCE_DIR}/src/dao)
 include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 
-# SOURCES
 file(GLOB SOURCES
     src/*.cpp
     src/model/*.cpp
@@ -44,7 +45,6 @@ file(GLOB SOURCES
     src/utils/*.cpp
 )
 
-# HEADERS
 file(GLOB HEADERS
     src/*.h
     src/model/*.h
@@ -56,7 +56,7 @@ file(GLOB HEADERS
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-# PROPERTIES
+# Properties
 set_target_properties (
     ${PROJECT_NAME}
         PROPERTIES
@@ -91,12 +91,29 @@ target_compile_options(
             -Wall -Wextra -pedantic -Werror
 )
 
-# copy files
-configure_file(
-    ${CMAKE_SOURCE_DIR}/data/nuclidelibrary.json
-    ${CMAKE_CURRENT_BINARY_DIR}/nuclidelibrary.json
-    COPYONLY
-)
+# Copy files from source directory to destination directory, substituting any
+# variables.  Create destination directory if it does not exist.
+macro(configure_files srcDir destDir)
+    message(STATUS "Configuring directory ${destDir}")
+    make_directory(${destDir})
+
+    file(GLOB templateFiles RELATIVE ${srcDir} ${srcDir}/*)
+    foreach(templateFile ${templateFiles})
+        set(srcTemplatePath ${srcDir}/${templateFile})
+        if(NOT IS_DIRECTORY ${srcTemplatePath})
+            message(STATUS "Configuring file ${templateFile}")
+            configure_file(
+                    ${srcTemplatePath}
+                    ${destDir}/${templateFile}
+                    COPYONLY)
+        endif(NOT IS_DIRECTORY ${srcTemplatePath})
+    endforeach(templateFile)
+endmacro(configure_files)
+
+configure_files(${CMAKE_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data)
+configure_files(${CMAKE_SOURCE_DIR}/ml/saved_model ${CMAKE_CURRENT_BINARY_DIR}/data/saved_model)
+configure_files(${CMAKE_SOURCE_DIR}/ml/saved_model/assets ${CMAKE_CURRENT_BINARY_DIR}/data/saved_model/assets)
+configure_files(${CMAKE_SOURCE_DIR}/ml/saved_model/variables ${CMAKE_CURRENT_BINARY_DIR}/data/saved_model/variables)
 
 # Package
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

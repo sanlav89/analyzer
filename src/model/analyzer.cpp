@@ -5,8 +5,8 @@
 namespace model {
 
 Analyzer::Analyzer()
-    : m_identifyMethod{new ConvNeuralNet{"d:/Workspace/OTUS/analyzer/ml/saved_model", SpectrumSize}}
-    , m_library{new NuclideLibrary{"nuclidelibrary.json"}}
+    : m_identifyMethod{new ConvNeuralNet{"./data/saved_model", SpectrumSize}}
+    , m_library{new NuclideLibrary{"./data/nuclidelibrary.json"}}
     , m_isStarted{false}
 {
     std::fill(m_spectrum.begin(), m_spectrum.end(), 1);
