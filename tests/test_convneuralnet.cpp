@@ -4,13 +4,15 @@
 
 #include <gtest/gtest.h>
 
-#include "tfidentifier.h"
+#include "convneuralnet.h"
+#include "utils.h"
 
-using namespace idf;
+using namespace model::idf;
+using namespace utils;
 
 const size_t length = 1024;
 
-TEST(TensorflowIdentifier, empty)
+TEST(ConvNeuralNet, empty)
 {
     // Load Tensrflow model
     std::cout << "TensorFlow Version: " << TF_Version() << std::endl;
@@ -20,11 +22,11 @@ TEST(TensorflowIdentifier, empty)
 TEST(TensorflowIdentifier, accuracy)
 {
     // Load Tensrflow model
-    TfIdentifier clf{"d:/Workspace/OTUS/analyzer/ml/saved_model", length};
+    ConvNeuralNet clf{"./data/saved_model", length};
 
     // Load test data
     spectrum_t spectrum;
-    std::ifstream test_data{"d:/Workspace/OTUS/analyzer/ml/test.csv"};
+    std::ifstream test_data{"../analyzer/ml/test.csv"};
     assert(test_data.is_open());
 
     // Calculate Accuracy

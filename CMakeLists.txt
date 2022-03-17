@@ -119,3 +119,62 @@ configure_files(${CMAKE_SOURCE_DIR}/ml/saved_model/variables ${CMAKE_CURRENT_BIN
 
 # Package
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+
+# Testing
+
+# GoogleTest package
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+include(GoogleTest)
+
+# Executables
+add_executable(
+    test_convneuralnet
+        tests/test_convneuralnet.cpp
+        src/model/convneuralnet.cpp
+        src/utils/utils.cpp
+        )
+
+set_target_properties (
+    test_convneuralnet
+        PROPERTIES
+            CMAKE_CXX_STANDARD 17
+            CMAKE_CXX_STANDARD_REQUIRED ON
+)
+
+target_compile_options(
+    test_convneuralnet
+        PRIVATE
+            -Wall -Wextra -pedantic -Werror
+)
+
+gtest_discover_tests(test_convneuralnet)
+target_include_directories(test_convneuralnet PRIVATE ${TF_INCLUDE_DIR})
+target_link_libraries(
+    test_convneuralnet
+    ${TF_LIBRARY}
+    gtest_main
+)
+
+set(TF_LIBRARY_DLL "tensorflow.dll")
+configure_file(
+    ${TF_LIBRARY}
+    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_LIB}
+    COPYONLY
+)
+configure_file(
+    ${CMAKE_SOURCE_DIR}/tensorflow/lib/${TF_LIBRARY_DLL}
+    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_DLL}
+    COPYONLY
+)
+
+# Testing
+enable_testing()
+add_test(test_convneuralnet test_convneuralnet)
+
