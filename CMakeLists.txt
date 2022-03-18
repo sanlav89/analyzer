@@ -140,9 +140,15 @@ add_executable(
         src/model/convneuralnet.cpp
         src/utils/utils.cpp
         )
+add_executable(
+    test_utilsmath
+        tests/test_utilsmath.cpp
+        src/utils/mathutils.cpp
+        )
 
 set_target_properties (
     test_convneuralnet
+    test_utilsmath
         PROPERTIES
             CMAKE_CXX_STANDARD 17
             CMAKE_CXX_STANDARD_REQUIRED ON
@@ -153,12 +159,21 @@ target_compile_options(
         PRIVATE
             -Wall -Wextra -pedantic -Werror
 )
+target_compile_options(
+    test_utilsmath
+        PRIVATE
+            -Wall -Wextra -pedantic -Werror
+)
 
 gtest_discover_tests(test_convneuralnet)
 target_include_directories(test_convneuralnet PRIVATE ${TF_INCLUDE_DIR})
 target_link_libraries(
     test_convneuralnet
     ${TF_LIBRARY}
+    gtest_main
+)
+target_link_libraries(
+    test_utilsmath
     gtest_main
 )
 
@@ -177,4 +192,5 @@ configure_file(
 # Testing
 enable_testing()
 add_test(test_convneuralnet test_convneuralnet)
+add_test(test_utilsmath test_utilsmath)
 
