@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nuclidelibrary.h"
+#include "spectrumgen.h"
 
 namespace sim {
 

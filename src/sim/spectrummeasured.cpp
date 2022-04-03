@@ -6,9 +6,10 @@ namespace sim {
 
 using namespace utils;
 
-SpectrumMeasured::SpectrumMeasured()
+SpectrumMeasured::SpectrumMeasured(const path_t &path)
 {
     std::fill(m_currentSpectrum.begin(), m_currentSpectrum.end(), 0);
+    loadFromDirectory(path);
 }
 
 void SpectrumMeasured::loadFromDirectory(const path_t &path)
