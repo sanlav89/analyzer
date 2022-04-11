@@ -29,34 +29,40 @@ if (UNIX)
 endif(UNIX)
 
 # Sources
+include_directories(${CMAKE_SOURCE_DIR}/src/analyzer)
 include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/src/model)
-include_directories(${CMAKE_SOURCE_DIR}/src/view)
-include_directories(${CMAKE_SOURCE_DIR}/src/ctrl)
-include_directories(${CMAKE_SOURCE_DIR}/src/dao)
-include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 
-file(GLOB SOURCES
-    src/*.cpp
-    src/model/*.cpp
-    src/view/*.cpp
-    src/ctrl/*.cpp
-    src/dao/*.cpp
+### Analyzer App
+
+file(GLOB SOURCES_ANALYZER
+    src/analyzer/main.cpp
+    src/analyzer/model/*.cpp
+    src/analyzer/model/idf/*.cpp
+    src/analyzer/view/*.cpp
+    src/analyzer/ctrl/*.cpp
+    src/simulator/*.cpp
+    src/utils/graph/*.cpp
+    src/utils/nuclidelibrary/*.cpp
+    src/utils/matlab/*.cpp
+    src/utils/recv/*.cpp
+    src/utils/udp/serverthread.cpp
     src/utils/*.cpp
-    src/sim/*.cpp
 )
-
-file(GLOB HEADERS
-    src/*.h
-    src/model/*.h
-    src/view/*.h
-    src/ctrl/*.h
-    src/dao/*.h
+file(GLOB HEADERS_ANALYZER
+    src/analyzer/model/*.h
+    src/analyzer/model/idf/*.h
+    src/analyzer/view/*.h
+    src/analyzer/ctrl/*.h
+    src/simulator/*.h
+    src/utils/graph/*.h
+    src/utils/nuclidelibrary/*.h
+    src/utils/matlab/*.h
+    src/utils/recv/*.h
+    src/utils/udp/serverthread.h
     src/utils/*.h
-    src/sim/*.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES_ANALYZER} ${HEADERS_ANALYZER})
 
 # Properties
 set_target_properties (
@@ -122,75 +128,75 @@ install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
 # Testing
 
-# GoogleTest package
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-include(GoogleTest)
+## GoogleTest package
+#include(FetchContent)
+#FetchContent_Declare(
+#  googletest
+#  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+#)
+## For Windows: Prevent overriding the parent project's compiler/linker settings
+#set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#FetchContent_MakeAvailable(googletest)
+#include(GoogleTest)
 
-# Executables
-add_executable(
-    test_convneuralnet
-        tests/test_convneuralnet.cpp
-        src/model/convneuralnet.cpp
-        src/utils/utils.cpp
-        )
-add_executable(
-    test_utilsmath
-        tests/test_utilsmath.cpp
-        src/utils/mathutils.cpp
-        )
+## Executables
+#add_executable(
+#    test_convneuralnet
+#        tests/test_convneuralnet.cpp
+#        src/model/convneuralnet.cpp
+#        src/utils/utils.cpp
+#        )
+#add_executable(
+#    test_utilsmath
+#        tests/test_utilsmath.cpp
+#        src/utils/mathutils.cpp
+#        )
 
-set_target_properties (
-    test_convneuralnet
-    test_utilsmath
-        PROPERTIES
-            CMAKE_CXX_STANDARD 17
-            CMAKE_CXX_STANDARD_REQUIRED ON
-)
+#set_target_properties (
+#    test_convneuralnet
+#    test_utilsmath
+#        PROPERTIES
+#            CMAKE_CXX_STANDARD 17
+#            CMAKE_CXX_STANDARD_REQUIRED ON
+#)
 
-target_compile_options(
-    test_convneuralnet
-        PRIVATE
-            -Wall -Wextra -pedantic -Werror
-)
-target_compile_options(
-    test_utilsmath
-        PRIVATE
-            -Wall -Wextra -pedantic -Werror
-)
+#target_compile_options(
+#    test_convneuralnet
+#        PRIVATE
+#            -Wall -Wextra -pedantic -Werror
+#)
+#target_compile_options(
+#    test_utilsmath
+#        PRIVATE
+#            -Wall -Wextra -pedantic -Werror
+#)
 
-gtest_discover_tests(test_convneuralnet)
-target_include_directories(test_convneuralnet PRIVATE ${TF_INCLUDE_DIR})
-target_link_libraries(
-    test_convneuralnet
-    ${TF_LIBRARY}
-    gtest_main
-)
-target_link_libraries(
-    test_utilsmath
-    gtest_main
-)
+#gtest_discover_tests(test_convneuralnet)
+#target_include_directories(test_convneuralnet PRIVATE ${TF_INCLUDE_DIR})
+#target_link_libraries(
+#    test_convneuralnet
+#    ${TF_LIBRARY}
+#    gtest_main
+#)
+#target_link_libraries(
+#    test_utilsmath
+#    gtest_main
+#)
 
-set(TF_LIBRARY_DLL "tensorflow.dll")
-configure_file(
-    ${TF_LIBRARY}
-    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_LIB}
-    COPYONLY
-)
-configure_file(
-    ${CMAKE_SOURCE_DIR}/tensorflow/lib/${TF_LIBRARY_DLL}
-    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_DLL}
-    COPYONLY
-)
+#set(TF_LIBRARY_DLL "tensorflow.dll")
+#configure_file(
+#    ${TF_LIBRARY}
+#    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_LIB}
+#    COPYONLY
+#)
+#configure_file(
+#    ${CMAKE_SOURCE_DIR}/tensorflow/lib/${TF_LIBRARY_DLL}
+#    ${CMAKE_CURRENT_BINARY_DIR}/${TF_LIBRARY_DLL}
+#    COPYONLY
+#)
 
-# Testing
-enable_testing()
-add_test(test_convneuralnet test_convneuralnet)
-add_test(test_utilsmath test_utilsmath)
+## Testing
+#enable_testing()
+#add_test(test_convneuralnet test_convneuralnet)
+#add_test(test_utilsmath test_utilsmath)
 
