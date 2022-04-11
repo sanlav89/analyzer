@@ -29,7 +29,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 }
 
-void MainWidget::updateEnergyScale(const poly_t &enpoly)
+void MainWidget::updateEnergyScale(const utils::poly_t &enpoly)
 {
     m_graph->updateEnergyScale(enpoly);
 }
@@ -51,12 +51,12 @@ void MainWidget::setPausedButtonsState()
     m_pauseBtn->setEnabled(false);
 }
 
-void MainWidget::updateSpectrum(const spectrum_t &spectrum)
+void MainWidget::updateSpectrum(const utils::spectrum_t &spectrum)
 {
     m_graph->updateSpectrum(spectrum);
 }
 
-void MainWidget::updateNuclides(const nuclides_t &nuclides)
+void MainWidget::updateNuclides(const utils::nuclides_t &nuclides)
 {
     m_graph->updateNuclides(nuclides);
 }
