@@ -58,3 +58,9 @@ compile_commands.json
 
 *.data-00000-of-00001
 *.index
+
+src/.git/*
+src/.gitignore
+src/src.pro
+
+
