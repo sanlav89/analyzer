@@ -3,7 +3,7 @@
 namespace sim {
 
 Simulator::Simulator(const double &countRate)
-    : m_countRate(countRate)
+    : m_countRate{countRate}
 {
 }
 

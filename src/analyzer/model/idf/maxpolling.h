@@ -12,7 +12,7 @@ class MaxPolling : public Method
 public:
     MaxPolling() = default;
 
-    virtual probas_t identify(const spectrum_t &)
+    utils::probas_t identify(const utils::spectrum_t &) override
     {
         std::cout << "NOT Identified with Simple Max Polling Method"
                      ", because this method need to be implement!" << std::endl;

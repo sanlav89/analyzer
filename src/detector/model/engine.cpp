@@ -8,8 +8,14 @@
 namespace detector {
 namespace model {
 
+const utils::poly_t m_energyPoly{-30.76253,2.686544,0.0007731202,-1.12527E-06,5.746466E-10};
+const utils::poly_t m_fwhmPoly{0.3180643473,1.2086508047,0.0274012077};
+const utils::poly_t m_efficiencyPoly{-19.424696, 20.563331, -7.695772, 0.906304};
+const double m_tlive = 3600;
+const double m_countRate = 100;
+
 Engine::Engine(QObject *parent)
-    : QObject(parent)
+    : QObject{parent}
     , m_library{utils::nl::NuclideLibrary::instance("./data/nuclidelibrary.json")}
     , m_simulator{new sim::Simulator(m_countRate)}
     , m_timer{new QTimer(this)}

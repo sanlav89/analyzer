@@ -13,11 +13,11 @@ Modeling::Modeling(
         const utils::poly_t &efficiencyPoly,
         const double &tlive
         )
-    : m_nuclidesAll(nuclidesAll)
-    , m_energyPoly(energyPoly)
-    , m_fwhmPoly(fwhmPoly)
-    , m_efficiencyPoly(efficiencyPoly)
-    , m_tlive(tlive)
+    : m_nuclidesAll{nuclidesAll}
+    , m_energyPoly{energyPoly}
+    , m_fwhmPoly{fwhmPoly}
+    , m_efficiencyPoly{efficiencyPoly}
+    , m_tlive{tlive}
 {
     m_energies = utils::matlab::calcEnergy(m_energyPoly);
     assert(m_nuclidesAll.size() > 0);

@@ -6,7 +6,7 @@ namespace sim {
 namespace gen {
 
 Measured::Measured(const std::map<utils::name_t, utils::spectrum_t> &spectrumMap)
-    : m_spectrumMap(spectrumMap)
+    : m_spectrumMap{spectrumMap}
 {
     std::fill(m_currentSpectrum.begin(), m_currentSpectrum.end(), 0);
 }

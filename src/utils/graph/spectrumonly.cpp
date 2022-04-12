@@ -5,7 +5,7 @@ namespace utils {
 namespace graph {
 
 SpectrumOnly::SpectrumOnly(const QColor &canvasColor1, const QColor &canvasColor2, QWidget *parent)
-    : QwtPlot(parent)
+    : QwtPlot{parent}
 {
     //  Widget settings
     setMinimumSize(800, 480);

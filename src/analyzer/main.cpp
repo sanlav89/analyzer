@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 //                );
 
     // Udp Receiver
-    controller.setReceiver(new utils::recv::UdpReceiver(9999, &controller));
+    controller.setReceiver(new utils::recv::UdpReceiver{9999, &controller});
 
     return a.exec();
 }

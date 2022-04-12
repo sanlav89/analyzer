@@ -4,9 +4,6 @@
 
 namespace sim {
 
-class Simulator;
-using SimulatorPtr = std::unique_ptr<Simulator>;
-
 class Simulator
 {
 public:
@@ -22,5 +19,7 @@ private:
     sim::gen::GeneratorPtr m_generator;
 
 };
+
+using SimulatorPtr = std::unique_ptr<Simulator>;
 
 }

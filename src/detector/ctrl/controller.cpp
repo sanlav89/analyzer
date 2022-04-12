@@ -4,9 +4,9 @@ namespace detector {
 namespace ctrl {
 
 Controller::Controller(view::MainWidget *view, model::Engine *model, QObject *parent)
-    : QObject(parent)
-    , m_view(view)
-    , m_model(model)
+    : QObject{parent}
+    , m_view{view}
+    , m_model{model}
 {
     connect(m_view, &view::MainWidget::modeChanged, this, &Controller::onModeChanged);
     connect(m_view, &view::MainWidget::activityChanged, this, &Controller::onActivityChanged);

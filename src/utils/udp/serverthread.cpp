@@ -4,13 +4,13 @@
 #include <QDebug>
 
 namespace utils {
-namespace tcp {
+namespace udp {
 
 namespace ba = boost::asio;
 
 ServerThread::ServerThread(short port, QObject *parent)
-    : QThread(parent)
-    , m_port(port)
+    : QThread{parent}
+    , m_port{port}
 {
 }
 

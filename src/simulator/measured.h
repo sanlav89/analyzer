@@ -6,9 +6,6 @@
 namespace sim {
 namespace gen {
 
-class Measured;
-using MeasuredPtr = std::shared_ptr<Measured>;
-
 class Measured : public Generator
 {
 public:
@@ -25,7 +22,8 @@ private:
 
 };
 
-}
+using MeasuredPtr = std::shared_ptr<Measured>;
 
+}
 }
 

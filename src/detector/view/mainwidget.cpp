@@ -9,7 +9,7 @@ MainWidget::MainWidget(
         const utils::names_t &nuclidesNames,
         const utils::names_t &measuredNames,
         QWidget *parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     m_graph = new utils::graph::SpectrumOnly(QColor(175, 175, 175), QColor(225, 225, 225), this);
     m_graph->updateEnergyScale(energyPoly);

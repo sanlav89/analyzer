@@ -6,9 +6,9 @@ namespace recv {
 UdpReceiver::UdpReceiver(short port, QObject *parent)
     : DataReceiver{parent}
 {
-    tcp::ServerThread *tcpServerThread = new tcp::ServerThread(port);
-    connect(tcpServerThread, &tcp::ServerThread::readyRead, this, &UdpReceiver::onReadyRead);
-    connect(tcpServerThread, &tcp::ServerThread::finished, tcpServerThread, &QObject::deleteLater);
+    udp::ServerThread *tcpServerThread = new udp::ServerThread(port);
+    connect(tcpServerThread, &udp::ServerThread::readyRead, this, &UdpReceiver::onReadyRead);
+    connect(tcpServerThread, &udp::ServerThread::finished, tcpServerThread, &QObject::deleteLater);
     tcpServerThread->start();
 }
 

@@ -6,7 +6,7 @@ namespace detector {
 namespace view {
 
 MeasuredWidget::MeasuredWidget(const utils::names_t &names, QWidget *parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     QListWidget *listWidget = new QListWidget(this);
     for (const auto &name : names) {

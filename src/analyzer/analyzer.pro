@@ -65,6 +65,6 @@ LIBS += -LC:/qwt-6.1.5_64/lib -lqwt
 INCLUDEPATH += $${PWD}/../../tensorflow/include/
 LIBS += -L$${PWD}/../../tensorflow/lib -ltensorflow
 
-INCLUDEPATH += C:/boost/include/boost-1_78/
-LIBS += "-LC:/boost/boost-1_78/stage/lib/"
+INCLUDEPATH += D:/boost/include/boost-1_78/
+LIBS += "-LD:/boost/boost-1_78/stage/lib/"
 LIBS += -lws2_32 -lwsock32

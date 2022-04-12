@@ -5,9 +5,6 @@
 namespace sim {
 namespace gen {
 
-class Generator;
-using GeneratorPtr = std::shared_ptr<Generator>;
-
 class Generator
 {
 public:
@@ -17,6 +14,8 @@ public:
     virtual utils::names_t names() const = 0;
 
 };
+
+using GeneratorPtr = std::shared_ptr<Generator>;
 
 }
 }

@@ -39,7 +39,7 @@ static void dummy_deleter(void *, size_t, void *)
 }
 
 ConvNeuralNet::ConvNeuralNet(const std::string &modelpath, const int &length)
-    : m_length(length)
+    : m_length{length}
 {
     tf_status status{TF_NewStatus(), TF_DeleteStatus};
     tf_import_graph_def_options opts{TF_NewImportGraphDefOptions(), TF_DeleteImportGraphDefOptions};
@@ -77,7 +77,7 @@ ConvNeuralNet::ConvNeuralNet(const std::string &modelpath, const int &length)
 }
 
 
-probas_t ConvNeuralNet::identify(const spectrum_t &spectrum)
+utils::probas_t ConvNeuralNet::identify(const utils::spectrum_t &spectrum)
 {
     assert(static_cast<size_t>(m_length) == spectrum.size());
 
@@ -86,7 +86,7 @@ probas_t ConvNeuralNet::identify(const spectrum_t &spectrum)
     preproc_features.reserve(spectrum.size());
     // Divide each bytes by 255
     std::transform(spectrum.begin(), spectrum.end(), std::back_inserter(preproc_features),
-                   [](sample_t val) { return std::log10(val) / 6;});
+                   [](utils::sample_t val) { return std::log10(val) / 6;});
     std::vector<TF_Output> inputs;
     std::vector<TF_Tensor*> input_values;
 
@@ -131,7 +131,7 @@ probas_t ConvNeuralNet::identify(const spectrum_t &spectrum)
         throw std::runtime_error{ss.str()};
     }
 
-    probas_t probas;
+    utils::probas_t probas;
     float* out_vals = static_cast<float*>(TF_TensorData(output_values[0]));
     for (size_t i = 0; i < num_classes(); ++i) {
         probas.push_back(*out_vals++);

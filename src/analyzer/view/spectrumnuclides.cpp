@@ -10,7 +10,7 @@ namespace analyzer {
 namespace view {
 
 SpectrumNuclides::SpectrumNuclides(const QColor &canvasColor1, const QColor &canvasColor2, QWidget *parent)
-    : SpectrumOnly(canvasColor1, canvasColor2, parent)
+    : SpectrumOnly{canvasColor1, canvasColor2, parent}
 {
     // Canvas
     m_canvas->setupPalette(canvasColor1, canvasColor2);

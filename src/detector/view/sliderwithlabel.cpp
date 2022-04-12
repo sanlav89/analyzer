@@ -7,8 +7,8 @@ namespace view {
 static int m_idCounter = 0;
 
 SliderWithLabel::SliderWithLabel(QWidget *parent)
-    : QWidget(parent)
-    , m_id(m_idCounter++)
+    : QWidget{parent}
+    , m_id{m_idCounter++}
 {
     m_label = new QLabel("0.00", this);
     m_slider = new QSlider(this);

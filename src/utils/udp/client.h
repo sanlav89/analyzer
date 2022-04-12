@@ -17,7 +17,6 @@ public:
 private:
 
     std::string m_hostAddr;
-//    boost::asio::ip::udp::resolver m_resolver;
     boost::asio::io_context m_ioContext;
     boost::asio::ip::udp::endpoint m_endpoint;
     boost::asio::ip::udp::socket m_udpSocket;

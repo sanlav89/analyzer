@@ -21,7 +21,7 @@ public:
 
     ConvNeuralNet& operator=(const ConvNeuralNet &) = delete;
 
-    probas_t identify(const spectrum_t &spectrum) override;
+    utils::probas_t identify(const utils::spectrum_t &spectrum) override;
 
 protected:
 

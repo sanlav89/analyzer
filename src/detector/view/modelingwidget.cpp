@@ -7,7 +7,7 @@ namespace detector {
 namespace view {
 
 ModelingWidget::ModelingWidget(const utils::names_t &names, QWidget *parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     std::vector<SliderWithLabel *> sliders(names.size());
     QGroupBox *slidersGB = new QGroupBox(this);

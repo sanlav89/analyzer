@@ -5,7 +5,7 @@
 #include <utils/types.h>
 
 namespace utils {
-namespace tcp {
+namespace udp {
 
 class ServerThread : public QThread
 {

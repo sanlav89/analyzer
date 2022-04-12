@@ -4,7 +4,7 @@ namespace utils {
 namespace graph {
 
 Canvas::Canvas(QColor beginColor, QColor endColor, QwtPlot *plot)
-    : QwtPlotCanvas(plot)
+    : QwtPlotCanvas{plot}
 {
     // The backing store is important, when working with widget
     // overlays ( f.e rubberbands for zooming ).

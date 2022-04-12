@@ -6,7 +6,7 @@ namespace analyzer {
 namespace view {
 
 MainWidget::MainWidget(QWidget *parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     m_graph = new SpectrumNuclides(QColor(75, 75, 75), QColor(125, 125, 125), this);
 

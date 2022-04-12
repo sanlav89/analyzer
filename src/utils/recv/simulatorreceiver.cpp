@@ -7,10 +7,10 @@ namespace utils {
 namespace recv {
 
 SimulatorReceiver::SimulatorReceiver(QObject *parent)
-    : DataReceiver(parent)
-    , m_countRate(100)
+    : DataReceiver{parent}
+    , m_countRate{100}
 {
-    m_simulator = new sim::Simulator(m_countRate);
+    m_simulator = new sim::Simulator{m_countRate};
     m_simulator->setGenerator(
                 sim::gen::MeasuredPtr{
                     new sim::gen::Measured(utils::loadFromDirectory("./data"))

@@ -5,9 +5,6 @@
 namespace sim {
 namespace gen {
 
-class Modeling;
-using ModelingPtr = std::shared_ptr<Modeling>;
-
 class Modeling : public Generator
 {
 public:
@@ -44,6 +41,8 @@ private:
     const double m_d = -0.002;
 
 };
+
+using ModelingPtr = std::shared_ptr<Modeling>;
 
 }
 }
