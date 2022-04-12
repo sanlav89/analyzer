@@ -4,13 +4,27 @@
 
 #include <gtest/gtest.h>
 
-#include "convneuralnet.h"
-#include "utils.h"
+#include <model/idf/convneuralnet.h>
 
-using namespace model::idf;
-using namespace utils;
+using namespace analyzer::model::idf;
 
 const size_t length = 1024;
+
+bool read_features_csv(std::istream &stream, utils::spectrum_t &spectrum, char sep = ',')
+{
+    std::string line;
+    std::getline(stream, line);
+    std::stringstream linestream{line};
+    std::string cell;
+
+    auto idx = 0;
+    while (std::getline(linestream, cell, sep)) {
+        if (!cell.empty()) {
+            spectrum[idx++] = std::stof(cell);
+        }
+    }
+    return stream.good();
+}
 
 TEST(ConvNeuralNet, empty)
 {
@@ -22,11 +36,11 @@ TEST(ConvNeuralNet, empty)
 TEST(TensorflowIdentifier, accuracy)
 {
     // Load Tensrflow model
-    ConvNeuralNet clf{"./data/saved_model", length};
+    ConvNeuralNet clf{"../data/saved_model", length};
 
     // Load test data
-    spectrum_t spectrum;
-    std::ifstream test_data{"../analyzer/ml/test.csv"};
+    utils::spectrum_t spectrum;
+    std::ifstream test_data{"../../analyzer/ml/test.csv"};
     assert(test_data.is_open());
 
     // Calculate Accuracy

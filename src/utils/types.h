@@ -20,6 +20,9 @@ using intensity_t = double;
 using energy_t = double;
 using poly_t = std::vector<double>;
 using color_t = int;
+using path_t = std::string;
+using name_t = std::string;
+using names_t = std::vector<std::string>;
 
 struct line_t {
     energy_t energy;
