@@ -10,7 +10,7 @@ using namespace analyzer::model::idf;
 
 const size_t length = 1024;
 
-bool read_features_csv(std::istream &stream, spectrum_t &spectrum, char sep = ',')
+bool read_features_csv(std::istream &stream, utils::spectrum_t &spectrum, char sep = ',')
 {
     std::string line;
     std::getline(stream, line);
@@ -39,7 +39,7 @@ TEST(TensorflowIdentifier, accuracy)
     ConvNeuralNet clf{"../data/saved_model", length};
 
     // Load test data
-    spectrum_t spectrum;
+    utils::spectrum_t spectrum;
     std::ifstream test_data{"../../analyzer/ml/test.csv"};
     assert(test_data.is_open());
 
