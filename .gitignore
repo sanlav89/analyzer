@@ -63,4 +63,8 @@ src/.git/*
 src/.gitignore
 src/src.pro
 
+matlab/*
+ml/*
+tensorflow/*
+analyzer.pro
 

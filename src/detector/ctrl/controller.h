@@ -11,7 +11,7 @@ class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(view::MainWidget *view, model::Engine *model, QObject *parent = nullptr);
+    Controller(view::MainWidget *view, model::Engine *model, QObject *parent = nullptr);
 
 private:
     view::MainWidget *m_view;

@@ -65,14 +65,6 @@ SpectrumNuclides::~SpectrumNuclides()
 
 void SpectrumNuclides::updateNuclides(const utils::nuclides_t &nuclides)
 {
-    // Sort All Lines
-    struct {
-        bool operator()(utils::line_t l1, utils::line_t l2) const
-        {
-            return l1.intensity < l2.intensity;
-        }
-    } less;
-
     // Disable all markers
     for (auto intervalCurve : m_nuclideBars) {
         intervalCurve->setVisible(false);
@@ -84,7 +76,14 @@ void SpectrumNuclides::updateNuclides(const utils::nuclides_t &nuclides)
 
     double ymax = axisScaleDiv(QwtPlot::yLeft).upperBound();
 
+    // less lambda
+    auto less = [](utils::line_t l1, utils::line_t l2)
+    {
+        return l1.intensity < l2.intensity;
+    };
+
     int ind = 0;
+
     for (const auto &nuclide : nuclides) {
         auto it = std::max_element(nuclide.lines.begin(), nuclide.lines.end(), less);
         double intencityMax = it->intensity;
